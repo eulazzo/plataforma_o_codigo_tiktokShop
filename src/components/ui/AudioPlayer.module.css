@@ -1,0 +1,123 @@
+.player {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  background: var(--surface);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius);
+  padding: 0.8rem 1rem;
+}
+
+.play {
+  flex: none;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: var(--accent);
+  color: var(--paper);
+  transition: transform var(--fast) var(--ease);
+}
+
+.play:hover {
+  transform: scale(1.05);
+}
+
+.play:active {
+  transform: scale(0.97);
+}
+
+.body {
+  flex: 1;
+  min-width: 0;
+  display: grid;
+  gap: 0.4rem;
+}
+
+.top {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.label {
+  font-size: 0.625rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.time {
+  font-size: 0.6875rem;
+  color: var(--muted-2);
+}
+
+/* barra de progresso: trilho fino, preenchimento em ciano */
+.range {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 4px;
+  border-radius: 999px;
+  background: linear-gradient(
+    to right,
+    var(--accent) 0 var(--progress, 0%),
+    var(--hairline-strong) var(--progress, 0%) 100%
+  );
+  cursor: pointer;
+}
+
+.range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  background: var(--accent);
+  border: 0;
+  cursor: pointer;
+}
+
+.range::-moz-range-thumb {
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  background: var(--accent);
+  border: 0;
+  cursor: pointer;
+}
+
+.speed {
+  flex: none;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  color: var(--muted);
+  border: 1px solid var(--hairline);
+  border-radius: 999px;
+  padding: 0.35rem 0.6rem;
+  min-width: 46px;
+  transition:
+    color var(--fast) var(--ease),
+    border-color var(--fast) var(--ease);
+}
+
+.speed:hover {
+  color: var(--ink);
+  border-color: var(--hairline-strong);
+}
+
+@media (max-width: 480px) {
+  .player {
+    gap: 0.7rem;
+    padding: 0.7rem 0.8rem;
+  }
+  .play {
+    width: 38px;
+    height: 38px;
+  }
+  .label {
+    display: none;
+  }
+}

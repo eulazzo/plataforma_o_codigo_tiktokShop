@@ -1,0 +1,506 @@
+/* ============================================================================
+   PAINEL DE CONTROLE
+   ----------------------------------------------------------------------------
+   Uma tela feita de quadros, cada um lendo de uma área diferente. Para não
+   virar colcha de retalhos, todos partilham a mesma caixa (.widget) e a mesma
+   estrutura de cabeçalho — o que muda é só o miolo.
+
+   Cores com significado fixo, as mesmas do resto da plataforma:
+     ciano/verde-água = feito, aprovado, aceso
+     magenta          = o que pede atenção
+     âmbar            = falta preencher
+   Nenhuma cor nova entra aqui: o painel é onde a identidade tem de se sustentar
+   inteira, não onde ela se dispersa.
+   ========================================================================== */
+
+.head h1 {
+  max-width: 20ch;
+}
+
+.motto {
+  max-width: 46ch;
+  font-style: italic;
+}
+
+/* --------------------------------------------------- faixa de progresso */
+.progress {
+  padding: 1.35rem 1.5rem 1.5rem;
+  margin-bottom: clamp(1.25rem, 1rem + 1vw, 1.75rem);
+}
+
+.progressHead {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 0.85rem;
+}
+
+.big {
+  font-size: 2.25rem;
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: -0.04em;
+  color: var(--ink);
+}
+
+.stats {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  flex-wrap: wrap;
+  margin-top: 1.25rem;
+  padding-top: 1.1rem;
+  border-top: 1px solid var(--hairline);
+}
+
+.stats > div {
+  display: grid;
+  gap: 2px;
+}
+
+.statNum {
+  font-size: var(--step-2);
+  font-weight: 500;
+  color: var(--ink);
+  letter-spacing: -0.03em;
+}
+
+.of {
+  color: var(--muted-2);
+  font-size: 0.8em;
+}
+
+.statLabel {
+  font-size: 0.6875rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted-2);
+}
+
+.statHint {
+  margin-left: auto;
+  font-size: var(--step--1);
+  color: var(--muted);
+  text-align: right;
+}
+
+@media (max-width: 640px) {
+  .statHint {
+    margin-left: 0;
+    text-align: left;
+    flex: 1 1 100%;
+  }
+}
+
+/* -------------------------------------------------------- grade de quadros */
+.grid {
+  display: grid;
+  gap: 1.15rem;
+  margin-bottom: clamp(2rem, 1.5rem + 2vw, 3rem);
+  /* larga · média · estreita, como a leitura pede: o que se mede, o que se
+     produz, o que se faz hoje */
+  grid-template-columns: 1.3fr 1fr 0.95fr;
+  align-items: start;
+}
+
+/* sem as ferramentas (versão Essencial) sobram duas colunas */
+.gridLite {
+  grid-template-columns: 1.25fr 1fr;
+}
+
+@media (max-width: 1100px) {
+  .grid,
+  .gridLite {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 720px) {
+  .grid,
+  .gridLite {
+    grid-template-columns: 1fr;
+  }
+}
+
+.col {
+  display: grid;
+  gap: 1.15rem;
+  align-content: start;
+}
+
+.widget {
+  padding: 1.25rem 1.35rem 1.35rem;
+}
+
+.widgetHead {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.widgetLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.28rem;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  color: var(--muted-2);
+  white-space: nowrap;
+  transition: color var(--fast) var(--ease);
+}
+
+.widgetLink:hover {
+  color: var(--accent);
+}
+
+.widgetNote {
+  margin-top: 1rem;
+  font-size: 0.75rem;
+  line-height: 1.6;
+  color: var(--muted-2);
+}
+
+/* ============================================================================
+   META DA SEMANA
+   ----------------------------------------------------------------------------
+   Anatomia emprestada dos cards de módulo: capa com degradê e numeral gigante
+   em cima, corpo com o conteúdo embaixo. Aqui o numeral não é decoração — é o
+   próprio dado, e o filete no pé da capa é a barra de progresso.
+
+   O degradê é o mesmo desenho de .cover em ModuleCard.module.css. Se o
+   tratamento das capas mudar lá, este acompanha.
+   ========================================================================== */
+.goal {
+  overflow: hidden;
+}
+
+.goalCover {
+  position: relative;
+  display: grid;
+  place-items: center;
+  aspect-ratio: 16 / 7;
+  background:
+    radial-gradient(120% 100% at 20% 0%, var(--from), transparent 62%),
+    linear-gradient(150deg, var(--to), var(--paper) 78%);
+  border-bottom: 1px solid var(--hairline);
+}
+
+/* o número é o dado, no mesmo tratamento do numeral das capas de módulo */
+.goalPercent {
+  font-size: clamp(2.75rem, 2.2rem + 3.4vw, 4rem);
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: -0.05em;
+  color: rgba(255, 255, 255, 0.92);
+  mix-blend-mode: overlay;
+  user-select: none;
+}
+
+.goalTag {
+  position: absolute;
+  left: 0.85rem;
+  bottom: 0.85rem;
+  font-size: 0.5625rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink);
+  background: rgba(10, 10, 13, 0.72);
+  backdrop-filter: blur(6px);
+  border: 1px solid var(--hairline);
+  border-radius: 999px;
+  padding: 0.28rem 0.62rem;
+}
+
+/* o progresso real, no pé da capa */
+.goalFill {
+  position: absolute;
+  left: 0;
+  bottom: -1px;
+  height: 3px;
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow: 0 0 14px rgba(255, 255, 255, 0.5);
+  transition: width 520ms var(--ease);
+}
+
+/* ---------- corpo ---------- */
+.goalBody {
+  padding: 1.25rem 1.35rem 1.35rem;
+}
+
+.goalFields {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+@media (max-width: 420px) {
+  .goalFields {
+    grid-template-columns: 1fr;
+  }
+}
+
+.goalField {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.money {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: var(--surface-sunk);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius-sm);
+  padding: 0 0.8rem;
+  min-height: 46px;
+  transition:
+    border-color var(--fast) var(--ease),
+    box-shadow var(--fast) var(--ease);
+}
+
+.money:focus-within {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-wash);
+}
+
+.money i {
+  flex: none;
+  font-style: normal;
+  font-size: 0.75rem;
+  color: var(--muted-2);
+}
+
+.money input {
+  width: 100%;
+  min-width: 0;
+  background: none;
+  border: 0;
+  outline: none;
+  padding: 0.55rem 0;
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  font-size: var(--step-1);
+  color: var(--ink);
+}
+
+.money input::placeholder {
+  color: var(--muted-2);
+}
+
+.goalNote {
+  margin-top: 1.1rem;
+  padding-top: 0.9rem;
+  border-top: 1px solid var(--hairline);
+  font-size: 0.75rem;
+  line-height: 1.6;
+  color: var(--muted-2);
+}
+
+/* ------------------------------------------------- sequência dos 21 dias */
+.streakTop {
+  display: flex;
+  align-items: baseline;
+  gap: 0.6rem;
+  margin-bottom: 0.9rem;
+}
+
+.streakLive,
+.streakOff {
+  font-size: var(--step-4);
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: -0.045em;
+}
+
+.streakLive {
+  color: var(--teal-deep);
+  text-shadow: 0 0 24px rgba(37, 244, 238, 0.4);
+}
+
+.streakOff {
+  color: var(--muted-2);
+}
+
+.streakLabel {
+  font-size: var(--step--1);
+  line-height: 1.4;
+  color: var(--muted);
+}
+
+.streakLabel em {
+  font-style: normal;
+  color: var(--muted-2);
+}
+
+/* a fila de blocos: o ciclo inteiro numa linha só */
+.blocks {
+  display: flex;
+  gap: 3px;
+}
+
+.block {
+  flex: 1;
+  height: 26px;
+  border-radius: 3px;
+  background: var(--surface-sunk);
+  border: 1px solid var(--hairline);
+  transition:
+    background var(--base) var(--ease),
+    box-shadow var(--base) var(--ease);
+}
+
+.blockOn {
+  background: var(--accent);
+  border-color: var(--accent);
+  box-shadow: 0 0 12px -3px rgba(37, 244, 238, 0.65);
+}
+
+.blockToday {
+  border-color: var(--accent);
+}
+
+.blockFuture {
+  opacity: 0.45;
+}
+
+/* ---------------------------------------------------- funil de mineração */
+.counters {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.6rem;
+}
+
+.counter {
+  display: grid;
+  gap: 0.25rem;
+  padding: 0.9rem 1rem;
+  border-radius: var(--radius-sm);
+  background: var(--surface-sunk);
+  border: 1px solid var(--hairline);
+}
+
+/* o aprovado é o número que se quer ver crescer, e só ele acende */
+.counterOk {
+  background: var(--teal-wash);
+  border-color: rgba(37, 244, 238, 0.35);
+}
+
+.counterNum {
+  font-size: var(--step-3);
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: -0.04em;
+  color: var(--ink);
+}
+
+.counterOk .counterNum {
+  color: var(--teal-deep);
+}
+
+.counterLabel {
+  font-size: 0.625rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted-2);
+}
+
+.counterOk .counterLabel {
+  color: var(--teal-deep);
+}
+
+/* ------------------------------------------------------- produto de foco */
+.focusOn {
+  border-color: rgba(37, 244, 238, 0.28);
+}
+
+.focusName {
+  font-size: var(--step-2);
+  margin: 0.6rem 0 0.5rem;
+  overflow-wrap: anywhere;
+}
+
+.focusText {
+  font-size: var(--step--1);
+  line-height: 1.6;
+  color: var(--muted);
+}
+
+.focusText strong {
+  color: var(--accent);
+  font-weight: 700;
+}
+
+.focusLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin-top: 0.9rem;
+  font-size: var(--step--1);
+  font-weight: 600;
+  color: var(--accent);
+  transition: gap var(--fast) var(--ease);
+}
+
+.focusLink:hover {
+  gap: 0.6rem;
+}
+
+/* ------------------------------------------------------------ dia de hoje */
+.todayCard {
+  position: relative;
+}
+
+.todayTitle {
+  font-size: var(--step-2);
+  margin-bottom: 0.4rem;
+}
+
+.todayText {
+  font-size: var(--step--1);
+  line-height: 1.55;
+  color: var(--muted);
+  margin-bottom: 1rem;
+}
+
+.tasks {
+  display: grid;
+  gap: 0.15rem;
+  margin-bottom: 1.1rem;
+  padding-top: 0.9rem;
+  border-top: 1px solid var(--hairline);
+}
+
+/* --------------------------------------------------------- plano completo */
+.planSection {
+  margin-bottom: 2.5rem;
+}
+
+.seeAll {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: var(--step--1);
+  font-weight: 600;
+  color: var(--muted);
+  white-space: nowrap;
+  transition: color var(--fast) var(--ease);
+}
+
+.seeAll:hover {
+  color: var(--ink);
+}
+
+.days {
+  display: grid;
+  gap: 0.9rem;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+}
+
+.bannerSlot:not(:empty) {
+  margin-top: 0.5rem;
+}

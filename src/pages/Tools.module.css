@@ -1,0 +1,122 @@
+/* versão Essencial: convite, como no Laboratório — nunca cadeado por cima */
+.locked {
+  display: grid;
+  justify-items: start;
+  gap: 0.75rem;
+  padding: clamp(1.5rem, 1.1rem + 1.6vw, 2.5rem);
+  max-width: 56ch;
+}
+
+.lockedIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  color: var(--accent);
+  background: var(--accent-wash);
+  margin-bottom: 0.25rem;
+}
+
+.locked h2 {
+  font-size: var(--step-2);
+}
+
+.locked p {
+  color: var(--muted);
+  line-height: 1.6;
+  margin-bottom: 0.5rem;
+}
+
+/* separador entre ferramentas, para quando a segunda chegar */
+.divider {
+  border: 0;
+  border-top: 1px solid var(--hairline);
+  margin: clamp(2.5rem, 2rem + 2vw, 4rem) 0;
+}
+
+/* ============================================================================
+   ABAS
+   ----------------------------------------------------------------------------
+   Sublinhado, não pílula: pílula já é a linguagem dos filtros nesta plataforma,
+   e aba precisa ler como navegação — troca de tela, não recorte de lista.
+   ========================================================================== */
+.tabs {
+  display: flex;
+  gap: 0.25rem;
+  border-bottom: 1px solid var(--hairline);
+  margin-bottom: clamp(1.75rem, 1.3rem + 1.6vw, 2.5rem);
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.tabs::-webkit-scrollbar {
+  display: none;
+}
+
+.tab {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex: none;
+  padding: 0.85rem 1rem;
+  font-size: var(--step-0);
+  font-weight: 500;
+  color: var(--muted);
+  white-space: nowrap;
+  transition: color var(--fast) var(--ease);
+}
+
+.tab::after {
+  content: '';
+  position: absolute;
+  left: 1rem;
+  right: 1rem;
+  bottom: -1px;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform var(--base) var(--ease);
+}
+
+.tab:hover {
+  color: var(--ink-2);
+}
+
+.tabOn {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.tabOn::after {
+  transform: none;
+}
+
+.tabNum {
+  font-size: 0.6875rem;
+  color: var(--muted-2);
+  transition: color var(--fast) var(--ease);
+}
+
+.tabOn .tabNum {
+  color: var(--accent);
+}
+
+/* rótulo longo no desktop, curto no celular */
+.tabShort {
+  display: none;
+}
+
+@media (max-width: 560px) {
+  .tabLabel {
+    display: none;
+  }
+
+  .tabShort {
+    display: inline;
+  }
+}

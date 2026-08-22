@@ -1,0 +1,174 @@
+.backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--gutter);
+  background: rgba(4, 4, 6, 0.72);
+  backdrop-filter: blur(6px);
+  animation: fade var(--base) var(--ease) both;
+}
+
+@keyframes fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.panel {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: min(640px, 100%);
+  max-height: min(85dvh, 780px);
+  overflow: hidden;
+  background: var(--paper-2);
+  border: 1px solid var(--hairline-strong);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lift);
+  outline: none;
+  animation: lift var(--base) var(--ease) both;
+}
+
+/* o fio ciano→magenta: mesma assinatura da bancada e do painel de métricas */
+.panel::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  z-index: 1;
+  background: linear-gradient(90deg, transparent, var(--accent) 20%, var(--magenta) 80%, transparent);
+  opacity: 0.85;
+}
+
+@keyframes lift {
+  from {
+    opacity: 0;
+    transform: translateY(14px) scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.35rem clamp(1.1rem, 0.9rem + 0.8vw, 1.75rem) 1.1rem;
+  border-bottom: 1px solid var(--hairline);
+}
+
+.headText h2 {
+  font-size: var(--step-2);
+}
+
+.headText p {
+  margin-top: 0.3rem;
+  font-size: var(--step--1);
+  line-height: 1.5;
+  color: var(--muted);
+}
+
+.close {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1px solid var(--hairline);
+  color: var(--muted);
+  transition:
+    color var(--fast) var(--ease),
+    border-color var(--fast) var(--ease);
+}
+
+.close:hover {
+  color: var(--ink);
+  border-color: var(--hairline-strong);
+}
+
+.body {
+  flex: 1;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: clamp(1.1rem, 0.9rem + 0.8vw, 1.75rem);
+}
+
+.foot {
+  border-top: 1px solid var(--hairline);
+  background: var(--surface);
+  padding: 1rem clamp(1.1rem, 0.9rem + 0.8vw, 1.75rem);
+}
+
+/* no celular a folha sobe da base e encosta nas laterais */
+@media (max-width: 640px) {
+  .backdrop {
+    align-items: flex-end;
+    padding: 0;
+  }
+
+  .panel {
+    width: 100%;
+    max-height: 92dvh;
+    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+    border-bottom: 0;
+    animation: sheet var(--base) var(--ease) both;
+  }
+
+  @keyframes sheet {
+    from {
+      transform: translateY(100%);
+    }
+    to {
+      transform: none;
+    }
+  }
+
+  .foot {
+    padding-bottom: calc(1rem + env(safe-area-inset-bottom));
+  }
+}
+
+/* ---------- versão estreita, para confirmação ----------
+   Continua centralizada no celular em vez de virar folha inferior: uma
+   pergunta de duas linhas não justifica o gesto de folha, e a caixa no meio
+   da tela deixa os dois botões à mesma distância do dedo. */
+.compact {
+  width: min(430px, 100%);
+}
+
+.compact .head {
+  padding-bottom: 0.85rem;
+  border-bottom: 0;
+}
+
+.compact .headText h2 {
+  font-size: var(--step-2);
+  max-width: 24ch;
+}
+
+.compact .body {
+  padding-top: 0;
+}
+
+@media (max-width: 640px) {
+  .compact {
+    width: calc(100% - 2rem);
+    margin: 0 1rem 1rem;
+    border-radius: var(--radius-lg);
+    border-bottom: 1px solid var(--hairline-strong);
+    animation: lift var(--base) var(--ease) both;
+  }
+}

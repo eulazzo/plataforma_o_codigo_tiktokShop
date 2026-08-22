@@ -1,0 +1,88 @@
+/* ============================================================================
+   TOKENS DE DESIGN — O Código TikTok Shop (área do aluno)
+   ----------------------------------------------------------------------------
+   Tema escuro, alinhado à identidade da landing: fundo quase preto, ciano como
+   acento principal, magenta reservado para o que exige atenção.
+   Hairlines em vez de sombras pesadas; o número do dia como elemento gráfico.
+
+   Os nomes são semânticos, não literais: --ink é a cor do texto principal
+   (clara, neste tema) e também o preenchimento dos botões invertidos.
+   Trocar de tema = mexer só neste arquivo.
+   ========================================================================== */
+
+:root {
+  /* --- superfícies --- */
+  --paper: #0a0a0d;
+  --paper-2: #0e0e12;
+  --surface: #141419;
+  --surface-sunk: #1a1a21;
+
+  /* --- traço --- */
+  --hairline: rgba(255, 255, 255, 0.08);
+  --hairline-strong: rgba(255, 255, 255, 0.17);
+
+  /* --- texto --- */
+  --ink: #f3f3f7;
+  --ink-2: #c6c6d2;
+  --muted: #8d8d9c;
+  --muted-2: #666674;
+
+  /* --- acento principal: ciano --- */
+  --accent: #25f4ee;
+  --accent-deep: #25f4ee;
+  --accent-wash: rgba(37, 244, 238, 0.11);
+
+  /* --- progresso e conclusão --- */
+  --teal: #25f4ee;
+  --teal-deep: #6ff8f4;
+  --teal-wash: rgba(37, 244, 238, 0.11);
+
+  /* --- atenção, usado com parcimônia --- */
+  --magenta: #fe2c55;
+  --magenta-wash: rgba(254, 44, 85, 0.12);
+
+  --amber: #f0b429;
+  --amber-wash: rgba(240, 180, 41, 0.09);
+  --amber-text: #e8c06a;
+
+  /* branco puro: só no hover dos botões invertidos */
+  --ink-hi: #ffffff;
+
+  /* --- tipografia --- */
+  --font-display: 'Bricolage Grotesque', 'Trebuchet MS', sans-serif;
+  --font-body: 'Manrope', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, 'Cascadia Mono', monospace;
+
+  --step--1: 0.8125rem;
+  --step-0: 0.9375rem;
+  --step-1: 1.0625rem;
+  --step-2: clamp(1.25rem, 1.1rem + 0.6vw, 1.5rem);
+  --step-3: clamp(1.5rem, 1.25rem + 1.1vw, 2rem);
+  --step-4: clamp(1.875rem, 1.4rem + 2vw, 2.75rem);
+
+  /* --- forma --- */
+  --radius-sm: 8px;
+  --radius: 14px;
+  --radius-lg: 20px;
+
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+  --shadow: 0 2px 6px rgba(0, 0, 0, 0.35), 0 16px 40px -20px rgba(0, 0, 0, 0.7);
+  --shadow-lift: 0 4px 12px rgba(0, 0, 0, 0.45), 0 24px 60px -24px rgba(0, 0, 0, 0.85);
+
+  /* --- layout --- */
+  --sidebar-w: 268px;
+  --topbar-h: 60px;
+  --mobilenav-h: 62px;
+  --gutter: clamp(1.125rem, 0.7rem + 2vw, 2.5rem);
+  --content-max: 1080px;
+
+  /* --- movimento (contido de propósito) --- */
+  --ease: cubic-bezier(0.32, 0.72, 0, 1);
+  --fast: 140ms;
+  --base: 220ms;
+}
+
+/* o navegador já sabe que é escuro: barras de rolagem e campos acompanham */
+:root {
+  color-scheme: dark;
+}

@@ -1,0 +1,367 @@
+/* ============================================================================
+   BIBLIOTECA DE GANCHOS
+   ----------------------------------------------------------------------------
+   Lista, não grade. São cinquenta frases curtas para varrer de cima a baixo —
+   dividir em colunas quebraria a leitura. O peso visual está na tipografia da
+   frase; tudo em volta (numeral, tipo, ações) fica em mono pequeno e recuado.
+
+   A linha inteira é o botão de copiar. Por isso ela não tem borda de card: o
+   destaque aparece no hover, quando o alvo precisa se anunciar.
+   ========================================================================== */
+
+/* ------------------------------------------------------------------ filtros */
+.controls {
+  display: grid;
+  gap: 0.9rem;
+  margin-bottom: 1.5rem;
+}
+
+.search {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  background: var(--surface);
+  border: 1px solid var(--hairline);
+  border-radius: 999px;
+  padding: 0 1rem;
+  color: var(--muted-2);
+  transition: border-color var(--fast) var(--ease);
+}
+
+.search:focus-within {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.search input {
+  flex: 1;
+  min-width: 0;
+  background: none;
+  border: 0;
+  outline: none;
+  padding: 0.85rem 0;
+  min-height: 46px;
+  font-size: var(--step-0);
+  color: var(--ink);
+}
+
+.search input::placeholder {
+  color: var(--muted-2);
+}
+
+.search input::-webkit-search-cancel-button {
+  filter: invert(0.6);
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.chip {
+  font-size: var(--step--1);
+  font-weight: 500;
+  color: var(--muted);
+  background: var(--surface);
+  border: 1px solid var(--hairline);
+  border-radius: 999px;
+  padding: 0.5rem 0.9rem;
+  min-height: 38px;
+  transition:
+    color var(--fast) var(--ease),
+    border-color var(--fast) var(--ease),
+    background var(--fast) var(--ease);
+}
+
+.chip:hover {
+  color: var(--ink);
+  border-color: var(--hairline-strong);
+}
+
+.chipOn {
+  color: var(--paper);
+  background: var(--ink);
+  border-color: var(--ink);
+}
+
+.chipToggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-left: auto;
+}
+
+.chipToggle span {
+  font-size: 0.625rem;
+  opacity: 0.75;
+}
+
+/* o toggle de separados usa a cor de conclusão, não a de acento */
+.chipToggle.chipOn {
+  background: var(--teal);
+  border-color: var(--teal);
+  color: var(--paper);
+}
+
+@media (max-width: 720px) {
+  .chipToggle {
+    margin-left: 0;
+  }
+}
+
+.kindNote {
+  font-size: var(--step--1);
+  line-height: 1.55;
+  color: var(--muted);
+  max-width: 74ch;
+  padding-left: 0.85rem;
+  border-left: 2px solid var(--hairline-strong);
+}
+
+/* -------------------------------------------------------------------- lista */
+.listHead {
+  display: flex;
+  align-items: baseline;
+  justify-content: flex-end;
+  padding: 0 0.75rem 0.5rem;
+}
+
+.count {
+  font-size: 0.6875rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted-2);
+}
+
+.list {
+  border-top: 1px solid var(--hairline);
+}
+
+.row {
+  display: flex;
+  align-items: stretch;
+  gap: 0.25rem;
+  border-bottom: 1px solid var(--hairline);
+  transition: background var(--fast) var(--ease);
+}
+
+.row:hover {
+  background: var(--surface);
+}
+
+/* a linha toda copia: alvo grande, uma intenção só */
+.pick {
+  flex: 1;
+  min-width: 0;
+  display: grid;
+  grid-template-columns: 2.25rem minmax(0, 1fr) auto auto;
+  align-items: center;
+  gap: 0.9rem;
+  text-align: left;
+  padding: 1.05rem 0.75rem;
+}
+
+.num {
+  font-size: 0.8125rem;
+  color: var(--muted-2);
+  transition: color var(--base) var(--ease);
+}
+
+.row:hover .num {
+  color: var(--accent);
+}
+
+/* a frase é o conteúdo: display, tamanho de leitura em voz alta */
+.text {
+  font-family: var(--font-display);
+  font-size: var(--step-1);
+  font-weight: 500;
+  line-height: 1.35;
+  letter-spacing: -0.015em;
+  color: var(--ink-2);
+  transition: color var(--fast) var(--ease);
+}
+
+.row:hover .text {
+  color: var(--ink);
+}
+
+/* o que o aluno troca — âmbar, como o "a preencher" do resto da plataforma */
+.blank {
+  color: var(--amber-text);
+  border-bottom: 1px dashed rgba(240, 180, 41, 0.55);
+}
+
+.kind {
+  font-size: 0.5625rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted-2);
+  white-space: nowrap;
+}
+
+/* o ícone de copiar só se anuncia quando a linha está sob o cursor */
+.copyIcon {
+  display: inline-flex;
+  color: var(--muted-2);
+  opacity: 0;
+  transition:
+    opacity var(--fast) var(--ease),
+    color var(--fast) var(--ease);
+}
+
+.row:hover .copyIcon {
+  opacity: 1;
+  color: var(--accent);
+}
+
+@media (hover: none) {
+  .copyIcon {
+    opacity: 1;
+  }
+}
+
+/* confirmação no lugar onde o clique aconteceu */
+.rowCopied,
+.rowCopied:hover {
+  background: var(--accent-wash);
+}
+
+.rowCopied .num,
+.rowCopied .copyIcon {
+  color: var(--accent);
+  opacity: 1;
+}
+
+.star {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 46px;
+  color: var(--muted-2);
+  opacity: 0.45;
+  transition:
+    color var(--fast) var(--ease),
+    opacity var(--fast) var(--ease);
+}
+
+.star:hover {
+  color: var(--teal-deep);
+  opacity: 1;
+}
+
+.starOn {
+  color: var(--teal);
+  opacity: 1;
+}
+
+/* separado = estrela cheia; o contorno vazio já significa "não separado" */
+.starOn svg path {
+  fill: currentColor;
+}
+
+@media (max-width: 640px) {
+  .pick {
+    grid-template-columns: 2rem minmax(0, 1fr) auto;
+    grid-template-areas:
+      'num text copy'
+      '.   kind kind';
+    gap: 0.35rem 0.75rem;
+    padding: 0.95rem 0.5rem;
+  }
+
+  .num {
+    grid-area: num;
+    align-self: start;
+    padding-top: 0.15rem;
+  }
+
+  .text {
+    grid-area: text;
+    font-size: var(--step-0);
+  }
+
+  .kind {
+    grid-area: kind;
+  }
+
+  .copyIcon {
+    grid-area: copy;
+    align-self: start;
+  }
+
+  .star {
+    width: 40px;
+  }
+}
+
+/* ------------------------------------------------------- vazio e rodapé */
+.empty {
+  display: grid;
+  justify-items: center;
+  gap: 0.5rem;
+  text-align: center;
+  padding: clamp(2.5rem, 2rem + 2vw, 3.75rem) 1.25rem;
+  border: 1px dashed var(--hairline-strong);
+  border-radius: var(--radius);
+}
+
+.emptyTitle {
+  font-family: var(--font-display);
+  font-size: var(--step-1);
+  color: var(--ink);
+}
+
+.emptyText {
+  font-size: var(--step--1);
+  line-height: 1.6;
+  color: var(--muted);
+  max-width: 44ch;
+}
+
+.emptyReset {
+  font-size: var(--step--1);
+  font-weight: 600;
+  color: var(--accent);
+  margin-top: 0.35rem;
+}
+
+.emptyReset:hover {
+  text-decoration: underline;
+}
+
+/* ------------------------------------------------------------------- como usar
+   Fica acima da lista, antes do primeiro clique. É instrução de uso, então
+   ganha caixa própria em vez de virar mais um parágrafo de prosa: quem já leu
+   uma vez identifica o bloco e pula. */
+.intro {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.9rem;
+  max-width: 74ch;
+  margin-bottom: 1.5rem;
+  padding: 1rem 1.15rem;
+  background: var(--surface);
+  border: 1px solid var(--hairline);
+  border-left: 2px solid var(--accent);
+  border-radius: var(--radius-sm);
+}
+
+.introIcon {
+  flex: none;
+  display: inline-flex;
+  color: var(--accent);
+  margin-top: 0.1rem;
+}
+
+.intro p {
+  font-size: var(--step--1);
+  line-height: 1.6;
+  color: var(--ink-2);
+}
+
+.bannerSlot {
+  margin-top: 1.75rem;
+}

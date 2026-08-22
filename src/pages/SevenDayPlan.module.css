@@ -1,0 +1,477 @@
+/* ============================================================================
+   PAINEL DE SITUAÇÃO
+   ========================================================================== */
+.panel {
+  display: grid;
+  gap: 1.5rem;
+  background: var(--surface);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius-lg);
+  padding: 1.6rem 1.75rem;
+  margin-bottom: 1.5rem;
+  position: relative;
+  overflow: hidden;
+}
+
+/* brilho discreto no canto, para o painel não competir em peso com os cards */
+.panel::after {
+  content: '';
+  position: absolute;
+  right: -60px;
+  top: -60px;
+  width: 220px;
+  height: 220px;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--accent-wash), transparent 70%);
+  pointer-events: none;
+}
+
+@media (min-width: 820px) {
+  .panel {
+    grid-template-columns: minmax(0, 1fr) 240px;
+    align-items: center;
+    gap: 2.5rem;
+  }
+}
+
+.panelMain {
+  position: relative;
+  z-index: 1;
+}
+
+.panelTitle {
+  font-size: var(--step-2);
+  margin: 0.5rem 0 0.4rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.6rem;
+}
+
+.panelDay {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent);
+  background: var(--accent-wash);
+  border-radius: 999px;
+  padding: 0.28rem 0.62rem;
+}
+
+.panelText {
+  font-size: var(--step-0);
+  color: var(--muted);
+  max-width: 52ch;
+  margin-bottom: 1.1rem;
+}
+
+.panelSide {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  gap: 0.85rem;
+}
+
+.panelStats {
+  display: flex;
+  gap: 2rem;
+}
+
+.panelStats > div {
+  display: grid;
+  gap: 1px;
+}
+
+.statNum {
+  font-size: var(--step-2);
+  font-weight: 500;
+  color: var(--ink);
+  letter-spacing: -0.03em;
+  line-height: 1;
+}
+
+.of {
+  color: var(--muted-2);
+  font-size: 0.8em;
+}
+
+.statLabel {
+  font-size: 0.625rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted-2);
+}
+
+/* ============================================================================
+   TRILHA DE DIAS
+   ========================================================================== */
+.rail {
+  display: flex;
+  gap: 0.4rem;
+  margin-bottom: 1.75rem;
+  overflow-x: auto;
+  padding-bottom: 0.25rem;
+  scrollbar-width: none;
+}
+
+.rail::-webkit-scrollbar {
+  display: none;
+}
+
+.railItem {
+  flex: 1 0 auto;
+  min-width: 62px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+  background: var(--surface);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius-sm);
+  padding: 0.6rem 0.5rem;
+  transition:
+    border-color var(--fast) var(--ease),
+    background var(--fast) var(--ease);
+}
+
+.railItem:hover {
+  border-color: var(--hairline-strong);
+}
+
+.railNum {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--muted);
+  transition: color var(--fast) var(--ease);
+}
+
+.railState {
+  display: grid;
+  place-items: center;
+  width: 16px;
+  height: 16px;
+  color: var(--accent);
+}
+
+.railDot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--hairline-strong);
+}
+
+.railDone .railNum {
+  color: var(--accent);
+}
+
+.railOpen {
+  background: var(--surface-sunk);
+  border-color: var(--ink);
+}
+
+.railOpen .railNum {
+  color: var(--ink);
+}
+
+.railOpen .railDot {
+  background: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-wash);
+}
+
+/* ============================================================================
+   LINHA DO TEMPO
+   ========================================================================== */
+.timeline {
+  display: grid;
+  gap: 0.6rem;
+}
+
+.item {
+  display: grid;
+  grid-template-columns: 34px 1fr;
+  gap: 1rem;
+  position: relative;
+}
+
+/* espinha ligando os dias */
+.item:not(:last-child)::before {
+  content: '';
+  position: absolute;
+  left: 16px;
+  top: 38px;
+  bottom: -0.6rem;
+  width: 1px;
+  background: var(--hairline);
+}
+
+.marker {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: var(--surface);
+  border: 1px solid var(--hairline-strong);
+  color: var(--muted);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  margin-top: 0.55rem;
+  z-index: 1;
+  transition:
+    background var(--base) var(--ease),
+    border-color var(--base) var(--ease),
+    color var(--base) var(--ease);
+}
+
+.done .marker {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--paper);
+}
+
+.current .marker {
+  border-color: var(--ink);
+  color: var(--ink);
+  box-shadow: 0 0 0 4px var(--accent-wash);
+}
+
+/* ---------- card do dia ---------- */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+  transition: border-color var(--base) var(--ease), box-shadow var(--base) var(--ease);
+}
+
+.open .card {
+  border-color: var(--hairline-strong);
+  box-shadow: var(--shadow);
+}
+
+/* ---------- cabeçalho clicável ---------- */
+.cardHead {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  text-align: left;
+  padding: 1.1rem 1.35rem;
+  min-height: 64px;
+  transition: background var(--fast) var(--ease);
+}
+
+.cardHead:hover {
+  background: var(--surface-sunk);
+}
+
+.headText {
+  display: grid;
+  gap: 0.3rem;
+  min-width: 0;
+}
+
+.dayLabel {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  flex-wrap: wrap;
+  font-size: 0.625rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted-2);
+}
+
+.nowTag {
+  letter-spacing: 0.1em;
+  color: var(--accent);
+  background: var(--accent-wash);
+  border-radius: 999px;
+  padding: 0.18rem 0.5rem;
+}
+
+.title {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: var(--step-1);
+  letter-spacing: -0.015em;
+  color: var(--ink);
+}
+
+.done .title {
+  color: var(--muted);
+}
+
+.headMeta {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  flex: none;
+}
+
+.taskCount {
+  font-size: 0.6875rem;
+  color: var(--muted-2);
+  border: 1px solid var(--hairline);
+  border-radius: 999px;
+  padding: 0.22rem 0.5rem;
+}
+
+.done .taskCount {
+  color: var(--accent);
+  border-color: transparent;
+  background: var(--accent-wash);
+}
+
+.chevron {
+  display: grid;
+  place-items: center;
+  color: var(--muted-2);
+  transition: transform var(--base) var(--ease), color var(--fast) var(--ease);
+}
+
+.open .chevron {
+  transform: rotate(180deg);
+  color: var(--ink);
+}
+
+/* ---------- corpo expandido ---------- */
+.body {
+  padding: 0 1.35rem 1.25rem;
+  animation: openBody var(--base) var(--ease) both;
+}
+
+@keyframes openBody {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.summaryLine {
+  font-size: var(--step-0);
+  color: var(--muted);
+  max-width: 62ch;
+  padding-bottom: 1.15rem;
+  border-bottom: 1px solid var(--hairline);
+}
+
+.grid {
+  display: grid;
+  gap: 1.5rem;
+  padding: 1.25rem 0;
+  border-bottom: 1px solid var(--hairline);
+}
+
+@media (min-width: 720px) {
+  .grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+  }
+}
+
+.objectives {
+  display: grid;
+  gap: 0.5rem;
+  margin-top: 0.7rem;
+}
+
+.objectives li {
+  position: relative;
+  padding-left: 1.1rem;
+  font-size: var(--step-0);
+  color: var(--ink-2);
+}
+
+.objectives li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.7em;
+  width: 6px;
+  height: 1px;
+  background: var(--hairline-strong);
+}
+
+.tasks {
+  margin-top: 0.35rem;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  padding-top: 1.1rem;
+}
+
+/* ---------- celular ---------- */
+@media (max-width: 560px) {
+  .panel {
+    padding: 1.35rem 1.25rem;
+  }
+  .item {
+    grid-template-columns: 26px 1fr;
+    gap: 0.7rem;
+  }
+  .item:not(:last-child)::before {
+    left: 12px;
+    top: 34px;
+  }
+  .marker {
+    width: 26px;
+    height: 26px;
+    font-size: 0.75rem;
+    margin-top: 0.7rem;
+  }
+  .cardHead {
+    padding: 0.95rem 1rem;
+  }
+  .body {
+    padding: 0 1rem 1.1rem;
+  }
+  .railItem {
+    min-width: 54px;
+  }
+}
+
+/* ---------- dia ainda trancado ---------- */
+.locked .card {
+  opacity: 0.6;
+}
+
+/* o cabeçalho continua legível: o aluno vê o que vem, só não abre as tarefas */
+.locked .cardHead {
+  cursor: default;
+}
+
+.locked .chevron {
+  opacity: 0.35;
+}
+
+.locked .marker {
+  border-style: dashed;
+  color: var(--muted-2);
+}
+
+.lockTag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  flex: none;
+  font-size: 0.5625rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted-2);
+  border: 1px solid var(--hairline);
+  border-radius: 999px;
+  padding: 0.25rem 0.6rem;
+  white-space: nowrap;
+}

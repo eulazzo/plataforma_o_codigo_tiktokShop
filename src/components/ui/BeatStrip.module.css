@@ -1,0 +1,79 @@
+.strip {
+  display: flex;
+  gap: 3px;
+  width: 100%;
+}
+
+.beat {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  min-width: 0;
+  padding: 0;
+  text-align: left;
+  background: none;
+  border: 0;
+  opacity: 0.85;
+  transition: opacity var(--fast) var(--ease), transform var(--fast) var(--ease);
+}
+
+button.beat {
+  cursor: pointer;
+}
+
+button.beat:hover {
+  opacity: 1;
+}
+
+.bar {
+  display: block;
+  height: 8px;
+  border-radius: 999px;
+  width: 100%;
+}
+
+.compact .bar {
+  height: 5px;
+}
+
+.caption {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  min-width: 0;
+}
+
+.label {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  color: var(--muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.secs {
+  font-size: 0.625rem;
+  color: var(--muted-2);
+}
+
+.active {
+  opacity: 1;
+}
+
+.active .bar {
+  height: 11px;
+  box-shadow: 0 0 0 3px var(--accent-wash);
+}
+
+.active .label {
+  color: var(--ink);
+}
+
+/* nas telas estreitas as legendas somem — a proporção das barras já conta a
+   história, e texto espremido não ajuda ninguém */
+@media (max-width: 720px) {
+  .caption {
+    display: none;
+  }
+}

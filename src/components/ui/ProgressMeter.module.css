@@ -1,0 +1,33 @@
+.meter {
+  display: flex;
+  gap: 4px;
+  width: 100%;
+}
+
+.seg {
+  flex: 1;
+  border-radius: 999px;
+  background: var(--hairline);
+  transition: background var(--base) var(--ease);
+}
+
+.md .seg {
+  height: 8px;
+}
+
+.sm .seg {
+  height: 5px;
+}
+
+.done {
+  background: var(--teal);
+}
+
+.current {
+  background: repeating-linear-gradient(
+    90deg,
+    var(--accent) 0 4px,
+    transparent 4px 8px
+  );
+  opacity: 0.55;
+}

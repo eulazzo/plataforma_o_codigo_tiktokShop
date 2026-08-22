@@ -1,0 +1,31 @@
+{
+  "name": "plataforma-ocodigo",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Área do aluno — O Código TikTok Shop (MVP front-end)",
+  "scripts": {
+    "dev": "node scripts/run.mjs dev complete",
+    "dev:essential": "node scripts/run.mjs dev essential",
+    "build": "npm run build:essential && npm run build:complete",
+    "build:essential": "node scripts/run.mjs build essential",
+    "build:complete": "node scripts/run.mjs build complete",
+    "preview:essential": "vite preview --outDir dist/essential",
+    "preview:complete": "vite preview --outDir dist/complete",
+    "typecheck": "tsc --noEmit",
+    "smoke": "node scripts/smoke.mjs"
+  },
+  "dependencies": {
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^6.26.2"
+  },
+  "devDependencies": {
+    "@types/node": "^26.2.0",
+    "@types/react": "^18.3.11",
+    "@types/react-dom": "^18.3.1",
+    "@vitejs/plugin-react": "^4.3.2",
+    "typescript": "^5.6.2",
+    "vite": "^5.4.8"
+  }
+}

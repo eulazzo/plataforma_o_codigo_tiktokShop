@@ -1,0 +1,61 @@
+.block {
+  border: 1px dashed var(--hairline-strong);
+  border-radius: var(--radius);
+  background: repeating-linear-gradient(
+    -45deg,
+    var(--surface-sunk) 0 10px,
+    transparent 10px 20px
+  );
+  padding: 1.4rem 1.5rem 1.5rem;
+}
+
+.head {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.5rem;
+}
+
+.head h3 {
+  font-size: var(--step-1);
+  color: var(--ink-2);
+}
+
+.tag {
+  font-size: 0.625rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--amber);
+  background: var(--amber-wash);
+  border-radius: 999px;
+  padding: 0.25rem 0.6rem;
+}
+
+.intro {
+  font-size: var(--step--1);
+  color: var(--muted);
+  margin-bottom: 0.85rem;
+}
+
+.outline {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.outline li {
+  position: relative;
+  padding-left: 1.1rem;
+  font-size: var(--step-0);
+  color: var(--muted);
+}
+
+.outline li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.65em;
+  width: 6px;
+  height: 1px;
+  background: var(--hairline-strong);
+}

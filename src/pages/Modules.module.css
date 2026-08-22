@@ -1,0 +1,25 @@
+.counter {
+  font-size: 0.6875rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted-2);
+  margin-bottom: 0.9rem;
+}
+
+/* com capa, os cards pedem grade: 3 colunas em tela larga, 2 em média,
+   1 no celular — sem nunca espremer a capa abaixo de ~260px */
+.list {
+  display: grid;
+  gap: 1.1rem;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+}
+
+@media (max-width: 600px) {
+  .list {
+    grid-template-columns: 1fr;
+  }
+}
+
+.bannerSlot:not(:empty) {
+  margin-top: 2rem;
+}

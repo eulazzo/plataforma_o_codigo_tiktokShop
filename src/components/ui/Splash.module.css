@@ -1,0 +1,90 @@
+.splash {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--gutter);
+  background: color-mix(in srgb, var(--paper) 92%, transparent);
+  backdrop-filter: blur(8px);
+  animation: fade 200ms var(--ease) both;
+}
+
+@keyframes fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.inner {
+  display: grid;
+  justify-items: center;
+  gap: 1.35rem;
+}
+
+/* a marca respira: o desvio magenta abre e fecha enquanto a espera dura */
+.mark {
+  animation: breathe 1600ms var(--ease) infinite;
+}
+
+@keyframes breathe {
+  0%,
+  100% {
+    transform: translateX(0) scale(1);
+  }
+  50% {
+    transform: translateX(1.5px) scale(1.04);
+  }
+}
+
+.label {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+/* barra indeterminada: não há progresso real para medir */
+.bar {
+  position: relative;
+  display: block;
+  width: 168px;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--surface-sunk);
+  overflow: hidden;
+}
+
+.bar i {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 45%;
+  border-radius: 2px;
+  background: linear-gradient(90deg, var(--accent), var(--magenta));
+  animation: sweep 1100ms var(--ease) infinite;
+}
+
+@keyframes sweep {
+  from {
+    left: -45%;
+  }
+  to {
+    left: 100%;
+  }
+}
+
+/* sem movimento, a espera continua legível pelo texto e pela barra parada */
+@media (prefers-reduced-motion: reduce) {
+  .bar i {
+    left: 0;
+    width: 100%;
+    opacity: 0.6;
+  }
+}

@@ -1,0 +1,99 @@
+.screen {
+  min-height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem var(--gutter);
+  background:
+    radial-gradient(60rem 40rem at 85% -10%, rgba(14, 156, 147, 0.07), transparent 60%),
+    radial-gradient(50rem 35rem at 5% 105%, rgba(255, 45, 85, 0.06), transparent 60%),
+    var(--paper);
+}
+
+.inner {
+  width: 100%;
+  max-width: 560px;
+  animation: rise 340ms var(--ease) both;
+}
+
+.brand {
+  margin-bottom: 2.5rem;
+}
+
+.title {
+  font-size: var(--step-4);
+  margin: 0.6rem 0 1rem;
+  letter-spacing: -0.03em;
+}
+
+.lead {
+  font-size: var(--step-1);
+  color: var(--muted);
+  margin-bottom: 2rem;
+  max-width: 46ch;
+}
+
+/* a espinha: o plano inteiro visível de uma vez, em silêncio */
+.spine {
+  border-left: 1px solid var(--hairline-strong);
+  padding-left: 1.15rem;
+  margin-bottom: 2rem;
+  display: grid;
+  gap: 0.55rem;
+}
+
+.spine li {
+  display: flex;
+  align-items: baseline;
+  gap: 0.85rem;
+  position: relative;
+}
+
+.spine li::before {
+  content: '';
+  position: absolute;
+  left: calc(-1.15rem - 3px);
+  top: 0.55em;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--hairline-strong);
+}
+
+.spine li:first-child::before {
+  background: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-wash);
+}
+
+.num {
+  font-size: 0.75rem;
+  color: var(--muted-2);
+  flex: none;
+}
+
+.dayTitle {
+  font-size: var(--step--1);
+  color: var(--ink-2);
+}
+
+.spine li:first-child .dayTitle {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.cue {
+  font-family: var(--font-display);
+  font-size: var(--step-2);
+  color: var(--ink);
+  margin-bottom: 1.25rem;
+}
+
+.note {
+  font-size: 0.75rem;
+  line-height: 1.6;
+  color: var(--muted-2);
+  margin-top: 1.75rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--hairline);
+  max-width: 48ch;
+}

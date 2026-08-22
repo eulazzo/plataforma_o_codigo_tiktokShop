@@ -1,0 +1,45 @@
+.logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.words {
+  display: inline-grid;
+  gap: 1px;
+  line-height: 1.1;
+}
+
+.kicker {
+  font-size: 0.625rem;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.name {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.3rem;
+  letter-spacing: -0.025em;
+  color: var(--ink);
+}
+
+/* pequeno detalhe: o ponto de acento depois do nome */
+.name::after {
+  content: '.';
+  color: var(--accent);
+}
+
+.compact {
+  gap: 0.5rem;
+}
+
+.compact .name {
+  font-size: 1.05rem;
+}
+
+.compact .kicker {
+  font-size: 0.5625rem;
+}

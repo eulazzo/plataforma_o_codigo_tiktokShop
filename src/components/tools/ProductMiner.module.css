@@ -1,0 +1,708 @@
+/* ============================================================================
+   CENTRAL DE MINERAÇÃO
+   ----------------------------------------------------------------------------
+   Ferramenta, não planilha. O que a diferencia de uma tabela cinza:
+     · a régua de cada nota aparece no momento de dar a nota;
+     · o placar se move enquanto a pessoa responde;
+     · o produto aprovado se destaca sozinho na lista, sem precisar procurar.
+
+   Verde-água (--teal) é aprovação — a mesma cor de "concluído" no plano de 7
+   dias. Reprovado fica cinza, não vermelho: não é alarme, é só um candidato que
+   não entrou.
+   ========================================================================== */
+
+.tool {
+  position: relative;
+}
+
+/* ------------------------------------------------------------------ topo */
+.head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1.25rem;
+  flex-wrap: wrap;
+  margin-bottom: 1.35rem;
+}
+
+.head h2 {
+  font-size: var(--step-3);
+  margin-bottom: 0.5rem;
+}
+
+.lead {
+  font-size: var(--step-0);
+  line-height: 1.55;
+  color: var(--muted);
+  max-width: 52ch;
+}
+
+.headActions {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+
+.add {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-body);
+  font-size: var(--step-0);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--paper);
+  background: var(--accent);
+  border: 1px solid var(--accent);
+  border-radius: 999px;
+  padding: 0.8rem 1.4rem;
+  min-height: 48px;
+  transition:
+    background var(--fast) var(--ease),
+    box-shadow var(--base) var(--ease),
+    transform var(--fast) var(--ease);
+}
+
+.add:hover {
+  background: var(--teal-deep);
+  box-shadow: 0 0 26px -4px rgba(37, 244, 238, 0.55);
+}
+
+.add:active {
+  transform: translateY(1px);
+}
+
+/* exportar é discreto de propósito: é a cópia de segurança, não a tarefa */
+.export {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: var(--step--1);
+  font-weight: 600;
+  color: var(--muted);
+  border: 1px solid var(--hairline);
+  border-radius: 999px;
+  padding: 0.7rem 1.05rem;
+  min-height: 44px;
+  transition:
+    color var(--fast) var(--ease),
+    border-color var(--fast) var(--ease);
+}
+
+.export:hover:not(:disabled) {
+  color: var(--ink);
+  border-color: var(--hairline-strong);
+}
+
+.export:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+/* --------------------------------------------------------- resumo e filtros */
+.stats {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.9rem;
+}
+
+.stat {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.35rem;
+  font-size: 0.6875rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted-2);
+  border: 1px solid var(--hairline);
+  border-radius: 999px;
+  padding: 0.3rem 0.75rem;
+}
+
+.stat strong {
+  font-size: var(--step-0);
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.statOk {
+  color: var(--teal-deep);
+  background: var(--teal-wash);
+  border-color: transparent;
+}
+
+.statOk strong {
+  color: var(--teal-deep);
+}
+
+.controls {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin-bottom: 1.25rem;
+}
+
+.search {
+  flex: 1 1 16rem;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  background: var(--surface);
+  border: 1px solid var(--hairline);
+  border-radius: 999px;
+  padding: 0 0.95rem;
+  color: var(--muted-2);
+  transition: border-color var(--fast) var(--ease);
+}
+
+.search:focus-within {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.search input {
+  flex: 1;
+  min-width: 0;
+  background: none;
+  border: 0;
+  outline: none;
+  padding: 0.75rem 0;
+  min-height: 44px;
+  font-size: var(--step-0);
+  color: var(--ink);
+}
+
+.search input::placeholder {
+  color: var(--muted-2);
+}
+
+.chips {
+  display: flex;
+  gap: 0.35rem;
+  flex-wrap: wrap;
+}
+
+.chip {
+  font-size: var(--step--1);
+  font-weight: 500;
+  color: var(--muted);
+  background: var(--surface);
+  border: 1px solid var(--hairline);
+  border-radius: 999px;
+  padding: 0.5rem 0.9rem;
+  min-height: 38px;
+  transition:
+    color var(--fast) var(--ease),
+    border-color var(--fast) var(--ease),
+    background var(--fast) var(--ease);
+}
+
+.chip:hover {
+  color: var(--ink);
+  border-color: var(--hairline-strong);
+}
+
+.chipOn {
+  color: var(--paper);
+  background: var(--ink);
+  border-color: var(--ink);
+}
+
+/* -------------------------------------------------------------------- lista */
+.list {
+  display: grid;
+  gap: 0.6rem;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto auto auto;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.95rem 1.15rem;
+  background: var(--surface);
+  border: 1px solid var(--hairline);
+  border-left: 3px solid var(--hairline);
+  border-radius: var(--radius);
+  transition:
+    border-color var(--base) var(--ease),
+    box-shadow var(--base) var(--ease);
+}
+
+.row:hover {
+  border-color: var(--hairline-strong);
+}
+
+/* aprovado se anuncia sozinho: filete e brilho verde-água */
+.rowOk {
+  border-left-color: var(--teal);
+  box-shadow: inset 0 0 0 1px rgba(37, 244, 238, 0.12), 0 0 24px -12px rgba(37, 244, 238, 0.5);
+}
+
+.rowOk:hover {
+  box-shadow: inset 0 0 0 1px rgba(37, 244, 238, 0.2), 0 0 30px -10px rgba(37, 244, 238, 0.6);
+}
+
+/* reprovado também se anuncia — filete vermelho, mas sem brilho: o destaque
+   com halo continua sendo prêmio de quem passou, não castigo de quem não */
+.rowNo {
+  border-left-color: var(--magenta);
+}
+
+.rowNo:hover {
+  box-shadow: inset 0 0 0 1px rgba(254, 44, 85, 0.14);
+}
+
+.rowMain {
+  min-width: 0;
+}
+
+.name {
+  font-size: var(--step-1);
+  margin-bottom: 0.25rem;
+  overflow-wrap: anywhere;
+}
+
+.rowMeta {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+
+.category {
+  font-size: 0.5625rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted-2);
+}
+
+.link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.28rem;
+  font-size: 0.6875rem;
+  color: var(--muted-2);
+  transition: color var(--fast) var(--ease);
+}
+
+.link:hover {
+  color: var(--accent);
+}
+
+/* --- os cinco pilares em cinco traços --- */
+.meter {
+  display: flex;
+  gap: 3px;
+  flex: none;
+}
+
+.meter i {
+  width: 6px;
+  height: 22px;
+  border-radius: 2px;
+  background: var(--surface-sunk);
+  border: 1px solid var(--hairline);
+}
+
+.lv0 {
+  opacity: 0.55;
+}
+
+.lv1 {
+  background: linear-gradient(to top, var(--accent) 50%, transparent 50%) !important;
+  border-color: rgba(37, 244, 238, 0.35) !important;
+}
+
+.lv2 {
+  background: var(--accent) !important;
+  border-color: var(--accent) !important;
+}
+
+.score {
+  flex: none;
+  font-size: var(--step-2);
+  font-weight: 500;
+  line-height: 1;
+  color: var(--ink);
+  letter-spacing: -0.03em;
+}
+
+.score small {
+  font-size: 0.6875rem;
+  color: var(--muted-2);
+  letter-spacing: 0;
+}
+
+.tagOk,
+.tagNo,
+.tagPending {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.5625rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  border-radius: 999px;
+  padding: 0.32rem 0.7rem;
+  white-space: nowrap;
+}
+
+.tagOk {
+  color: var(--teal-deep);
+  background: var(--teal-wash);
+}
+
+.tagNo {
+  color: var(--magenta);
+  background: var(--magenta-wash);
+}
+
+/*
+ * O rodapé do modal, enquanto a nota ainda está sendo dada.
+ *
+ * Ali o texto é "Faltam 3", que é contagem, não veredito: o produto não foi
+ * reprovado, a pessoa acabou de abrir o formulário. Vermelho desde o primeiro
+ * clique repreenderia quem ainda está preenchendo. O vermelho entra quando a
+ * nota é fechada e o produto vai para a lista.
+ */
+.tagPending {
+  color: var(--muted-2);
+  border: 1px solid var(--hairline);
+}
+
+.rowActions {
+  display: flex;
+  gap: 0.15rem;
+  flex: none;
+}
+
+.rowActions button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  color: var(--muted-2);
+  transition:
+    color var(--fast) var(--ease),
+    background var(--fast) var(--ease);
+}
+
+.rowActions button:hover {
+  color: var(--ink);
+  background: var(--surface-sunk);
+}
+
+.rowActions button:last-child:hover {
+  color: var(--magenta);
+}
+
+@media (max-width: 820px) {
+  .row {
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas:
+      'main   score'
+      'meter  tag'
+      'acoes  acoes';
+    gap: 0.65rem 1rem;
+  }
+
+  .rowMain {
+    grid-area: main;
+  }
+
+  .score {
+    grid-area: score;
+    justify-self: end;
+  }
+
+  .meter {
+    grid-area: meter;
+  }
+
+  .tagOk,
+  .tagNo {
+    grid-area: tag;
+    justify-self: end;
+  }
+
+  .rowActions {
+    grid-area: acoes;
+    justify-content: flex-end;
+    border-top: 1px solid var(--hairline);
+    padding-top: 0.5rem;
+  }
+}
+
+/* -------------------------------------------------------- formulário do modal */
+.form {
+  display: grid;
+  gap: 0.9rem;
+  padding-bottom: 1.35rem;
+  margin-bottom: 1.35rem;
+  border-bottom: 1px solid var(--hairline);
+}
+
+.fieldPair {
+  display: grid;
+  gap: 0.9rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+@media (max-width: 560px) {
+  .fieldPair {
+    grid-template-columns: 1fr;
+  }
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.field input {
+  background: var(--surface-sunk);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius-sm);
+  padding: 0.7rem 0.85rem;
+  min-height: 46px;
+  font-size: var(--step-0);
+  color: var(--ink);
+  outline: none;
+  transition:
+    border-color var(--fast) var(--ease),
+    box-shadow var(--fast) var(--ease);
+}
+
+.field input::placeholder {
+  color: var(--muted-2);
+}
+
+.field input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-wash);
+}
+
+/* --------------------------------------------------------------- os pilares */
+.pillars {
+  display: grid;
+  gap: 1.15rem;
+}
+
+.pillar {
+  border: 0;
+  display: grid;
+  gap: 0.6rem;
+}
+
+.pillarHead {
+  display: flex;
+  align-items: baseline;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+  padding: 0;
+}
+
+.pillarName {
+  font-family: var(--font-display);
+  font-size: var(--step-1);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+}
+
+.pillarQuestion {
+  font-size: var(--step--1);
+  color: var(--muted);
+}
+
+.notes {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.4rem;
+}
+
+.note {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 46px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--hairline);
+  background: var(--surface-sunk);
+  font-size: var(--step-1);
+  font-weight: 500;
+  color: var(--muted);
+  transition:
+    color var(--fast) var(--ease),
+    background var(--fast) var(--ease),
+    border-color var(--fast) var(--ease);
+}
+
+.note:hover {
+  color: var(--ink);
+  border-color: var(--hairline-strong);
+}
+
+.noteOn {
+  color: var(--accent);
+  background: var(--accent-wash);
+  border-color: var(--accent);
+}
+
+/* nota cheia preenche: o 2 se distingue do 1 sem precisar ler */
+.noteFull {
+  color: var(--paper);
+  background: var(--accent);
+}
+
+/* a régua do pilar — o que a planilha nunca mostrou na hora certa */
+.level {
+  font-size: var(--step--1);
+  line-height: 1.55;
+  color: var(--ink-2);
+  padding-left: 0.8rem;
+  border-left: 2px solid var(--hairline-strong);
+  min-height: 2.4em;
+}
+
+/* ----------------------------------------------------- rodapé fixo do modal */
+.footBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.liveScore {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.liveValue {
+  display: flex;
+  align-items: baseline;
+  gap: 0.1rem;
+  font-size: var(--step-3);
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: -0.04em;
+  color: var(--muted);
+  transition: color var(--base) var(--ease);
+}
+
+.liveValue small {
+  font-size: 0.8125rem;
+  color: var(--muted-2);
+  letter-spacing: 0;
+}
+
+/* o momento em que o produto passa: o placar acende */
+.liveOk {
+  color: var(--teal-deep);
+  text-shadow: 0 0 20px rgba(37, 244, 238, 0.45);
+}
+
+.footActions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-left: auto;
+}
+
+.cancel {
+  font-size: var(--step--1);
+  font-weight: 600;
+  color: var(--muted);
+  padding: 0.75rem 0.9rem;
+  min-height: 44px;
+  transition: color var(--fast) var(--ease);
+}
+
+.cancel:hover {
+  color: var(--ink);
+}
+
+.save {
+  font-family: var(--font-body);
+  font-size: var(--step--1);
+  font-weight: 700;
+  color: var(--paper);
+  background: var(--accent);
+  border: 1px solid var(--accent);
+  border-radius: 999px;
+  padding: 0.75rem 1.35rem;
+  min-height: 44px;
+  transition:
+    background var(--fast) var(--ease),
+    opacity var(--fast) var(--ease);
+}
+
+.save:hover:not(:disabled) {
+  background: var(--teal-deep);
+}
+
+.save:disabled {
+  color: var(--muted);
+  background: var(--surface-sunk);
+  border-color: var(--hairline-strong);
+  cursor: default;
+}
+
+/* ------------------------------------------------------------------- vazio */
+.empty {
+  display: grid;
+  justify-items: center;
+  gap: 0.6rem;
+  text-align: center;
+  padding: clamp(2.5rem, 2rem + 2vw, 3.75rem) 1.25rem;
+  border: 1px dashed var(--hairline-strong);
+  border-radius: var(--radius);
+}
+
+.emptyIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  color: var(--accent);
+  background: var(--accent-wash);
+  margin-bottom: 0.35rem;
+}
+
+.emptyTitle {
+  font-family: var(--font-display);
+  font-size: var(--step-1);
+  color: var(--ink);
+}
+
+.emptyText {
+  font-size: var(--step--1);
+  line-height: 1.6;
+  color: var(--muted);
+  max-width: 48ch;
+  margin-bottom: 0.75rem;
+}
+
+.emptyReset {
+  font-size: var(--step--1);
+  font-weight: 600;
+  color: var(--accent);
+  margin-top: 0.35rem;
+}
+
+.emptyReset:hover {
+  text-decoration: underline;
+}

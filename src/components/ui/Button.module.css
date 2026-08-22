@@ -1,0 +1,98 @@
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-family: var(--font-body);
+  font-weight: 600;
+  line-height: 1;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  white-space: nowrap;
+  transition:
+    background var(--fast) var(--ease),
+    border-color var(--fast) var(--ease),
+    color var(--fast) var(--ease),
+    transform var(--fast) var(--ease);
+}
+
+.btn:active {
+  transform: scale(0.985);
+}
+
+.btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+/* --- tamanhos: generosos no toque, como pede o mobile --- */
+.md {
+  font-size: var(--step-0);
+  padding: 0.8rem 1.35rem;
+  min-height: 46px;
+}
+
+.sm {
+  font-size: var(--step--1);
+  padding: 0.55rem 1rem;
+  min-height: 38px;
+}
+
+.full {
+  width: 100%;
+}
+
+/* --- variantes --- */
+.primary {
+  background: var(--ink);
+  color: var(--paper);
+}
+.primary:hover:not(:disabled) {
+  background: var(--ink-hi);
+}
+
+.secondary {
+  background: var(--surface);
+  color: var(--ink);
+  border-color: var(--hairline-strong);
+}
+.secondary:hover:not(:disabled) {
+  border-color: var(--ink);
+}
+
+.quiet {
+  background: transparent;
+  color: var(--muted);
+  padding-left: 0.6rem;
+  padding-right: 0.6rem;
+}
+.quiet:hover:not(:disabled) {
+  color: var(--ink);
+}
+
+/* --- estado de espera --- */
+.loading {
+  cursor: progress;
+}
+
+/* o disabled genérico apaga o botão; carregando ele continua vivo, só travado */
+.btn.loading:disabled {
+  opacity: 1;
+}
+
+.spinner {
+  width: 15px;
+  height: 15px;
+  flex: none;
+  border-radius: 50%;
+  border: 2px solid currentColor;
+  border-top-color: transparent;
+  opacity: 0.85;
+  animation: btnSpin 680ms linear infinite;
+}
+
+@keyframes btnSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}

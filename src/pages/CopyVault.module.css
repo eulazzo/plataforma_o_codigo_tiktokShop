@@ -1,0 +1,331 @@
+/* -------------------------------------------------------------- a espera */
+.locked {
+  display: grid;
+  justify-items: center;
+  text-align: center;
+  gap: 1rem;
+  max-width: 46rem;
+  margin: 0 auto;
+  padding: clamp(2.25rem, 1.8rem + 2vw, 3.5rem) clamp(1.25rem, 1rem + 2vw, 2.75rem);
+  background: linear-gradient(180deg, var(--surface), var(--paper-2) 70%);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow);
+}
+
+.lockedMain {
+  display: flex;
+  align-items: baseline;
+  gap: 0.6rem;
+}
+
+.lockedDays {
+  font-size: clamp(3.5rem, 2.6rem + 4vw, 5.5rem);
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: -0.05em;
+  color: var(--ink);
+}
+
+.lockedUnit {
+  font-size: var(--step-1);
+  color: var(--muted);
+}
+
+/* os sete blocos: mesma gramática da grade dos 21 dias */
+.lockedBlocks {
+  display: flex;
+  gap: 4px;
+  width: min(320px, 100%);
+}
+
+.lockedBlocks i {
+  flex: 1;
+  height: 6px;
+  border-radius: 3px;
+  background: var(--surface-sunk);
+  border: 1px solid var(--hairline);
+  transition: background var(--base) var(--ease);
+}
+
+.lockedBlocks .blockOn {
+  background: var(--accent);
+  border-color: var(--accent);
+  box-shadow: 0 0 12px -3px rgba(37, 244, 238, 0.6);
+}
+
+.lockedText {
+  font-size: var(--step-0);
+  line-height: 1.65;
+  color: var(--muted);
+  max-width: 52ch;
+}
+
+.lockedText strong {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.lockedNote {
+  font-size: 0.75rem;
+  line-height: 1.6;
+  color: var(--muted-2);
+  max-width: 56ch;
+}
+
+
+/* peças da tela travada que o módulo 09 também tem */
+.lockedIcon {
+  display: grid;
+  place-items: center;
+  width: 62px;
+  height: 62px;
+  border-radius: 50%;
+  color: var(--ink);
+  background: var(--surface-sunk);
+  border: 1px solid var(--hairline-strong);
+}
+
+.lockedWhy {
+  font-size: var(--step--1);
+  line-height: 1.7;
+  color: var(--ink-2);
+  max-width: 54ch;
+  padding-top: 1rem;
+  border-top: 1px solid var(--hairline);
+}
+
+/* ============================================================================
+   AS COPYS
+   ----------------------------------------------------------------------------
+   Foto à esquerda, texto à direita. A foto é vertical porque produto de TikTok
+   Shop é fotografado vertical — e porque a copy ao lado precisa de altura.
+   ========================================================================== */
+.pending {
+  display: grid;
+  justify-items: start;
+  gap: 0.6rem;
+  padding: 2rem;
+  margin-bottom: 1.5rem;
+  border: 1px dashed var(--hairline-strong);
+  border-radius: var(--radius);
+  background: repeating-linear-gradient(-45deg, var(--surface-sunk) 0 10px, transparent 10px 20px);
+}
+
+.pendingTag {
+  font-size: 0.5625rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--amber);
+}
+
+.pending p {
+  color: var(--muted);
+}
+
+.list {
+  display: grid;
+  gap: 1.15rem;
+}
+
+.card {
+  display: grid;
+  grid-template-columns: 260px minmax(0, 1fr);
+  gap: 1.5rem;
+  padding: 1.25rem;
+  background: var(--surface);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+  transition: border-color var(--base) var(--ease);
+}
+
+.card:hover {
+  border-color: var(--hairline-strong);
+}
+
+@media (max-width: 780px) {
+  .card {
+    grid-template-columns: 1fr;
+    gap: 1.15rem;
+  }
+}
+
+/* a coluna da foto: rótulo em cima, imagem embaixo */
+.shot {
+  min-width: 0;
+  display: grid;
+  align-content: start;
+  gap: 0.6rem;
+}
+
+.shot img,
+.shotEmpty {
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  object-fit: cover;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--hairline);
+  background: var(--paper);
+  display: block;
+}
+
+@media (max-width: 780px) {
+  .shot img,
+  .shotEmpty {
+    max-width: 260px;
+  }
+}
+
+.shotEmpty {
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: 0.6rem;
+  color: var(--muted-2);
+  border-style: dashed;
+  border-color: var(--hairline-strong);
+  background: repeating-linear-gradient(-45deg, var(--surface-sunk) 0 10px, transparent 10px 20px);
+}
+
+.shotTag {
+  font-size: 0.5625rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--amber);
+}
+
+/* ---------- a coluna do texto ---------- */
+.text {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.head {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.6rem;
+}
+
+.number {
+  font-size: 0.8125rem;
+  color: var(--muted-2);
+}
+
+.category {
+  font-size: 0.5625rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--accent);
+  background: var(--accent-wash);
+  border-radius: 999px;
+  padding: 0.25rem 0.62rem;
+}
+
+.draftTag {
+  font-size: 0.5625rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--amber);
+  background: var(--amber-wash);
+  border-radius: 999px;
+  padding: 0.22rem 0.55rem;
+}
+
+.product {
+  font-size: var(--step-2);
+  margin-bottom: 1.1rem;
+}
+
+/* a copy é o conteúdo: tamanho de leitura, não de nota de rodapé */
+.quote {
+  padding: 1.15rem 1.3rem;
+  background: var(--surface-sunk);
+  border-left: 2px solid var(--accent);
+  border-radius: var(--radius-sm);
+}
+
+.quote p {
+  font-size: var(--step-1);
+  line-height: 1.75;
+  color: var(--ink);
+}
+
+.copyBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  align-self: flex-start;
+  margin-top: 0.9rem;
+  font-family: var(--font-body);
+  font-size: var(--step--1);
+  font-weight: 600;
+  color: var(--accent);
+  background: var(--accent-wash);
+  border: 1px solid rgba(37, 244, 238, 0.4);
+  border-radius: 999px;
+  padding: 0.7rem 1.15rem;
+  min-height: 42px;
+  transition:
+    background var(--fast) var(--ease),
+    color var(--fast) var(--ease);
+}
+
+.copyBtn:hover:not(:disabled) {
+  background: var(--accent);
+  color: var(--paper);
+}
+
+.copyBtn:disabled {
+  color: var(--muted-2);
+  background: var(--surface-sunk);
+  border-color: var(--hairline);
+  cursor: default;
+}
+
+/* ---------- por que ela funciona ---------- */
+.notes {
+  margin-top: auto;
+  padding-top: 1.25rem;
+}
+
+.notes ul {
+  display: grid;
+  gap: 0.6rem;
+  margin-top: 0.55rem;
+}
+
+.notes li {
+  position: relative;
+  padding-left: 1.05rem;
+  font-size: 0.8125rem;
+  line-height: 1.6;
+  color: var(--ink-2);
+}
+
+.notes li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.55em;
+  width: 6px;
+  height: 6px;
+  background: var(--magenta);
+  transform: rotate(45deg);
+  opacity: 0.8;
+}
+
+.foot {
+  margin-top: 1.75rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--hairline);
+  font-size: 0.75rem;
+  line-height: 1.6;
+  color: var(--muted-2);
+  max-width: 72ch;
+}
+

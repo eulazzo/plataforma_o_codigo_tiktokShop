@@ -1,0 +1,641 @@
+/* ============================================================================
+   PAINEL DE CONSISTÊNCIA
+   ----------------------------------------------------------------------------
+   A grade dos 21 dias é a assinatura da ferramenta: o ciclo inteiro cabe numa
+   olhada, e o buraco de um dia perdido aparece antes de virar hábito.
+
+   Cores com significado fixo aqui:
+     verde-água = dia publicado (mesma cor de "concluído" no plano de 7 dias)
+     magenta    = dia perdido
+     ciano      = hoje, o único dia que ainda dá para resolver
+   ========================================================================== */
+
+.tool {
+  position: relative;
+}
+
+.head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1.25rem;
+  flex-wrap: wrap;
+  margin-bottom: 1.35rem;
+}
+
+.head h2 {
+  font-size: var(--step-3);
+  margin-bottom: 0.5rem;
+}
+
+.lead {
+  font-size: var(--step-0);
+  line-height: 1.55;
+  color: var(--muted);
+  max-width: 54ch;
+}
+
+.headActions {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+
+.add {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-body);
+  font-size: var(--step-0);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--paper);
+  background: var(--accent);
+  border: 1px solid var(--accent);
+  border-radius: 999px;
+  padding: 0.8rem 1.4rem;
+  min-height: 48px;
+  transition:
+    background var(--fast) var(--ease),
+    box-shadow var(--base) var(--ease),
+    transform var(--fast) var(--ease);
+}
+
+.add:hover {
+  background: var(--teal-deep);
+  box-shadow: 0 0 26px -4px rgba(37, 244, 238, 0.55);
+}
+
+.add:active {
+  transform: translateY(1px);
+}
+
+.export {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: var(--step--1);
+  font-weight: 600;
+  color: var(--muted);
+  border: 1px solid var(--hairline);
+  border-radius: 999px;
+  padding: 0.7rem 1.05rem;
+  min-height: 44px;
+  transition:
+    color var(--fast) var(--ease),
+    border-color var(--fast) var(--ease);
+}
+
+.export:hover:not(:disabled) {
+  color: var(--ink);
+  border-color: var(--hairline-strong);
+}
+
+.export:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+/* ------------------------------------------------------------------ placar */
+.scoreboard {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.75rem;
+  margin-bottom: 1.75rem;
+}
+
+@media (max-width: 640px) {
+  .scoreboard {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.score {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  padding: 1rem 1.15rem;
+  background: var(--surface);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius);
+}
+
+/* a sequência viva é a única que acende: é o número que se quer proteger */
+.scoreLive {
+  border-color: rgba(37, 244, 238, 0.35);
+  background: linear-gradient(180deg, var(--accent-wash), var(--surface) 70%);
+}
+
+.scoreValue {
+  display: flex;
+  align-items: baseline;
+  gap: 0.1rem;
+  font-size: var(--step-3);
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: -0.04em;
+  color: var(--ink);
+}
+
+.scoreLive .scoreValue {
+  color: var(--teal-deep);
+}
+
+.scoreValue small {
+  font-size: 0.8125rem;
+  color: var(--muted-2);
+  letter-spacing: 0;
+}
+
+.scoreLabel {
+  font-size: 0.6875rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted-2);
+}
+
+/* ---------------------------------------------------------- grade de 21 dias */
+.gridHead {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 0.75rem;
+}
+
+.restart {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: var(--step--1);
+  color: var(--muted);
+  transition: color var(--fast) var(--ease);
+}
+
+.restart:hover {
+  color: var(--accent);
+}
+
+.cycleNote {
+  font-size: var(--step--1);
+  line-height: 1.55;
+  color: var(--amber-text);
+  background: var(--amber-wash);
+  border-radius: var(--radius-sm);
+  padding: 0.75rem 0.95rem;
+  margin-bottom: 0.9rem;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  /* a folga maior entre linhas separa as três semanas sem precisar rotulá-las */
+  gap: 0.4rem 0.4rem;
+  margin-bottom: clamp(2rem, 1.5rem + 2vw, 3rem);
+}
+
+.cell {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.15rem;
+  aspect-ratio: 1;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--hairline);
+  background: var(--surface);
+  color: var(--muted-2);
+  transition:
+    border-color var(--fast) var(--ease),
+    background var(--fast) var(--ease),
+    color var(--fast) var(--ease),
+    transform var(--fast) var(--ease);
+}
+
+.cell:hover:not(:disabled) {
+  border-color: var(--hairline-strong);
+  transform: translateY(-1px);
+}
+
+.cellDay {
+  font-size: var(--step-1);
+  font-weight: 500;
+  line-height: 1;
+  color: var(--ink-2);
+}
+
+.cellDate {
+  font-size: 0.5625rem;
+  letter-spacing: 0.04em;
+  color: var(--muted-2);
+}
+
+/* dia publicado */
+.cellDone {
+  border-color: rgba(37, 244, 238, 0.4);
+  background: var(--teal-wash);
+}
+
+.cellDone .cellDay {
+  color: var(--teal-deep);
+}
+
+/* dia que passou em branco — marcado, não escondido: é o que se quer evitar */
+.cellMissed {
+  border-color: rgba(254, 44, 85, 0.3);
+  background: var(--magenta-wash);
+}
+
+.cellMissed .cellDay {
+  color: var(--magenta);
+  opacity: 0.75;
+}
+
+/* hoje: o único dia que ainda dá para resolver */
+.cellToday {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 1px var(--accent), 0 0 22px -8px rgba(37, 244, 238, 0.8);
+}
+
+.cellToday .cellDay {
+  color: var(--accent);
+}
+
+.cellFuture {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.cellTick {
+  position: absolute;
+  top: 4px;
+  right: 5px;
+  color: var(--teal);
+}
+
+/* mais de um vídeo no dia é escala vertical, e merece aparecer */
+.cellCount {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 17px;
+  height: 17px;
+  padding: 0 4px;
+  border-radius: 999px;
+  font-size: 0.5625rem;
+  font-weight: 600;
+  color: var(--paper);
+  background: var(--teal);
+}
+
+@media (max-width: 560px) {
+  .cellDate {
+    display: none;
+  }
+
+  .cellDay {
+    font-size: var(--step-0);
+  }
+}
+
+/* --------------------------------------------------- comparação de formatos */
+.analysis {
+  background: var(--surface);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius-lg);
+  padding: clamp(1.15rem, 0.9rem + 1vw, 1.75rem);
+}
+
+.analysisHead {
+  margin-bottom: 1.1rem;
+}
+
+.analysisHead h3 {
+  font-size: var(--step-2);
+  margin-top: 0.35rem;
+}
+
+.analysisEmpty {
+  font-size: var(--step--1);
+  line-height: 1.6;
+  color: var(--muted);
+  max-width: 60ch;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--step--1);
+}
+
+.table th {
+  text-align: left;
+  font-family: var(--font-mono);
+  font-size: 0.5625rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted-2);
+  padding: 0 0.6rem 0.6rem 0;
+  border-bottom: 1px solid var(--hairline);
+  white-space: nowrap;
+}
+
+.table td {
+  padding: 0.7rem 0.6rem 0.7rem 0;
+  border-bottom: 1px solid var(--hairline);
+  color: var(--ink-2);
+  white-space: nowrap;
+}
+
+.table td:first-child {
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.table th:not(:first-child),
+.table td:not(:first-child) {
+  text-align: right;
+  padding-right: 0;
+  padding-left: 0.6rem;
+}
+
+.tableWinner td {
+  color: var(--teal-deep);
+}
+
+.tableWinner td:first-child {
+  color: var(--teal-deep);
+}
+
+@media (max-width: 620px) {
+  .analysis {
+    overflow-x: auto;
+  }
+
+  .table {
+    min-width: 34rem;
+  }
+}
+
+.verdict,
+.verdictWaiting {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  margin-top: 1.1rem;
+  font-size: var(--step--1);
+  line-height: 1.6;
+  max-width: 70ch;
+}
+
+.verdict {
+  color: var(--teal-deep);
+}
+
+.verdict strong {
+  font-weight: 700;
+}
+
+/* sem amostra não há veredito: a tela diz que é cedo em vez de inventar */
+.verdictWaiting {
+  color: var(--muted-2);
+}
+
+/* ------------------------------------------------------ o dia dentro do modal */
+.dayList {
+  display: grid;
+  gap: 0.5rem;
+  margin-bottom: 1.25rem;
+}
+
+.dayPost {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  padding: 0.75rem 0.9rem;
+  background: var(--surface-sunk);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius-sm);
+}
+
+.dayPostMain {
+  flex: 1 1 12rem;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.dayPostMain strong {
+  font-size: var(--step-0);
+  color: var(--ink);
+  overflow-wrap: anywhere;
+}
+
+.dayHook {
+  font-size: 0.5625rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.dayNumbers {
+  display: flex;
+  gap: 0.75rem;
+  font-size: 0.6875rem;
+  color: var(--muted-2);
+  white-space: nowrap;
+}
+
+.dayActions {
+  display: flex;
+  gap: 0.1rem;
+  margin-left: auto;
+}
+
+.dayActions a,
+.dayActions button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  color: var(--muted-2);
+  transition:
+    color var(--fast) var(--ease),
+    background var(--fast) var(--ease);
+}
+
+.dayActions a:hover,
+.dayActions button:hover {
+  color: var(--ink);
+  background: var(--surface);
+}
+
+.dayActions button:last-child:hover {
+  color: var(--magenta);
+}
+
+/* ------------------------------------------------------ formulário do modal */
+.form {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.9rem;
+  padding-top: 0.25rem;
+}
+
+@media (max-width: 560px) {
+  .form {
+    grid-template-columns: 1fr;
+  }
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.fieldWide {
+  grid-column: 1 / -1;
+}
+
+.field input {
+  background: var(--surface-sunk);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius-sm);
+  padding: 0.7rem 0.85rem;
+  min-height: 46px;
+  font-size: var(--step-0);
+  color: var(--ink);
+  outline: none;
+  transition:
+    border-color var(--fast) var(--ease),
+    box-shadow var(--fast) var(--ease);
+}
+
+.field input::placeholder {
+  color: var(--muted-2);
+}
+
+.field input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-wash);
+}
+
+.field small {
+  font-size: 0.6875rem;
+  line-height: 1.4;
+  color: var(--muted-2);
+}
+
+.select {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: var(--surface-sunk);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius-sm);
+  padding: 0 0.85rem;
+  min-height: 46px;
+  color: var(--muted);
+  transition:
+    border-color var(--fast) var(--ease),
+    box-shadow var(--fast) var(--ease);
+}
+
+.select:focus-within {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-wash);
+}
+
+.select select {
+  flex: 1;
+  min-width: 0;
+  appearance: none;
+  -webkit-appearance: none;
+  background: none;
+  border: 0;
+  outline: none;
+  padding: 0.7rem 0;
+  font-family: var(--font-body);
+  font-size: var(--step-0);
+  color: var(--ink);
+  cursor: pointer;
+}
+
+/* a lista nativa não herda o tema em todo navegador */
+.select option {
+  background: var(--surface);
+  color: var(--ink);
+}
+
+.select svg {
+  flex: none;
+  color: var(--muted);
+}
+
+/* --------------------------------------------------------- rodapé do modal */
+.footBar {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.5rem;
+}
+
+.cancel {
+  font-size: var(--step--1);
+  font-weight: 600;
+  color: var(--muted);
+  padding: 0.75rem 0.9rem;
+  min-height: 44px;
+  transition: color var(--fast) var(--ease);
+}
+
+.cancel:hover {
+  color: var(--ink);
+}
+
+.save,
+.addInline {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  font-family: var(--font-body);
+  font-size: var(--step--1);
+  font-weight: 700;
+  color: var(--paper);
+  background: var(--accent);
+  border: 1px solid var(--accent);
+  border-radius: 999px;
+  padding: 0.75rem 1.35rem;
+  min-height: 44px;
+  transition:
+    background var(--fast) var(--ease),
+    opacity var(--fast) var(--ease);
+}
+
+.addInline {
+  width: 100%;
+}
+
+.save:hover:not(:disabled),
+.addInline:hover {
+  background: var(--teal-deep);
+}
+
+.save:disabled {
+  color: var(--muted);
+  background: var(--surface-sunk);
+  border-color: var(--hairline-strong);
+  cursor: default;
+}

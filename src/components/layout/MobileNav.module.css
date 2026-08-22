@@ -1,0 +1,170 @@
+.bar {
+  position: fixed;
+  inset: auto 0 0 0;
+  z-index: 40;
+  height: calc(var(--mobilenav-h) + env(safe-area-inset-bottom));
+  padding-bottom: env(safe-area-inset-bottom);
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 1fr;
+  background: color-mix(in srgb, var(--paper) 92%, transparent);
+  backdrop-filter: blur(14px);
+  border-top: 1px solid var(--hairline);
+}
+
+@media (min-width: 900px) {
+  .bar {
+    display: none;
+  }
+}
+
+.item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  color: var(--muted);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  transition: color var(--fast) var(--ease);
+  position: relative;
+}
+
+.active {
+  color: var(--ink);
+}
+
+.active::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 22px;
+  height: 2px;
+  border-radius: 0 0 2px 2px;
+  background: var(--accent);
+}
+
+/* ---------- folha "Mais" ---------- */
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: flex-end;
+  animation: fade 160ms var(--ease) both;
+}
+
+@keyframes fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.sheet {
+  width: 100%;
+  background: var(--paper);
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+  padding: 0.6rem 1.25rem calc(1.5rem + env(safe-area-inset-bottom));
+  animation: slide 240ms var(--ease) both;
+  max-height: 82vh;
+  overflow-y: auto;
+}
+
+@keyframes slide {
+  from {
+    transform: translateY(14px);
+  }
+  to {
+    transform: none;
+  }
+}
+
+.grab {
+  width: 38px;
+  height: 4px;
+  border-radius: 999px;
+  background: var(--hairline-strong);
+  margin: 0 auto 0.9rem;
+}
+
+.sheetHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.75rem;
+}
+
+.sheetHead strong {
+  font-family: var(--font-display);
+  font-size: var(--step-2);
+  color: var(--ink);
+}
+
+.sheetHead button {
+  color: var(--muted);
+  padding: 0.35rem;
+}
+
+.list {
+  display: grid;
+  gap: 2px;
+}
+
+.listItem {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.85rem 0.5rem;
+  border-radius: 10px;
+  color: var(--muted-2);
+  min-height: 48px;
+}
+
+.listLabel {
+  flex: 1;
+  font-size: var(--step-0);
+  font-weight: 500;
+}
+
+.tag {
+  font-size: 0.5625rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  border: 1px solid var(--hairline);
+  border-radius: 999px;
+  padding: 0.18rem 0.5rem;
+}
+
+.note {
+  font-size: 0.75rem;
+  color: var(--muted-2);
+  padding-top: 0.9rem;
+  margin-top: 0.5rem;
+  border-top: 1px solid var(--hairline);
+}
+
+/* áreas prontas: link de verdade dentro da folha, com contraste de item ativo */
+.listLink {
+  color: var(--ink-2);
+  transition:
+    color var(--fast) var(--ease),
+    background var(--fast) var(--ease);
+}
+
+.listLink:hover,
+.listLink:active {
+  color: var(--ink);
+  background: var(--surface-sunk);
+}
+
+.listActive {
+  color: var(--accent);
+  background: var(--accent-wash);
+}

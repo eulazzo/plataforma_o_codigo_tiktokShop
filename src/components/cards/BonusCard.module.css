@@ -1,0 +1,250 @@
+/* ============================================================================
+   MÓDULO 09 — BASTIDORES
+   ----------------------------------------------------------------------------
+   Herda a anatomia do ModuleCard e muda em dois pontos: a capa mostra cadeado
+   em vez de numeral enquanto está fechado, e o corpo troca o "abrir módulo"
+   pela contagem.
+
+   A capa usa magenta, o único tom da rampa dos módulos que os oito primeiros
+   não usam por inteiro. Não é cor de alarme aqui — é o fim da rampa, e serve
+   para este card se destacar na grade como algo de outra natureza.
+   ========================================================================== */
+
+.card {
+  display: flex;
+  flex-direction: column;
+  background: var(--surface);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  transition:
+    transform var(--base) var(--ease),
+    box-shadow var(--base) var(--ease),
+    border-color var(--base) var(--ease);
+}
+
+/* só o card aberto reage ao toque — travado não é link, e não deve fingir ser */
+.open:hover {
+  transform: translateY(-3px);
+  border-color: var(--hairline-strong);
+  box-shadow: var(--shadow);
+}
+
+/* ---------- capa ---------- */
+.cover {
+  position: relative;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  display: grid;
+  place-items: center;
+  background:
+    radial-gradient(120% 100% at 20% 0%, var(--from), transparent 62%),
+    linear-gradient(150deg, var(--to), var(--paper) 78%);
+  border-bottom: 1px solid var(--hairline);
+}
+
+/* a arte enviada cobre o degradê; o selo e a etiqueta ficam por cima dela */
+.coverImage {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 1;
+}
+
+/* com imagem por baixo, o selo precisa de um véu para o texto sobreviver */
+.cover::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background: linear-gradient(180deg, rgba(10, 10, 13, 0.55), rgba(10, 10, 13, 0.15) 45%, rgba(10, 10, 13, 0.6));
+}
+
+.seal,
+.coverTag,
+.coverDays {
+  z-index: 3;
+}
+
+.coverNumber {
+  font-size: clamp(3.5rem, 3rem + 5vw, 5rem);
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: -0.05em;
+  color: rgba(255, 255, 255, 0.9);
+  mix-blend-mode: overlay;
+  user-select: none;
+}
+
+/* o selo é o par cadeado-e-nome: um explica o outro, e juntos ocupam o eixo
+   central da capa em vez de deixarem metade dela vazia */
+.seal {
+  display: grid;
+  justify-items: center;
+  gap: 0.85rem;
+}
+
+/*
+ * BONUS PREMIUM
+ * Não usa âmbar nem verde-água: nesta plataforma os dois já significam outra
+ * coisa — falta preencher e concluído. Aqui o destaque vem do branco puro
+ * sobre a capa magenta, com a borda clara e o brilho carregando o sentido de
+ * "isto é de outra categoria".
+ */
+.premium {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.625rem;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--ink-hi);
+  background: rgba(10, 10, 13, 0.42);
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  border-radius: 999px;
+  padding: 0.36rem 0.85rem 0.36rem 0.7rem;
+  backdrop-filter: blur(6px);
+  text-shadow: 0 0 18px rgba(255, 255, 255, 0.45);
+  box-shadow: 0 6px 18px -8px rgba(0, 0, 0, 0.7);
+  white-space: nowrap;
+}
+
+/* o cadeado ocupa o centro da capa enquanto a data não chega */
+.lock {
+  display: grid;
+  place-items: center;
+  width: 68px;
+  height: 68px;
+  border-radius: 50%;
+  color: var(--ink);
+  background: rgba(10, 10, 13, 0.55);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  backdrop-filter: blur(4px);
+}
+
+/* a etiqueta fica no ALTO da capa: no pé ela cai em cima do texto da arte,
+   que é onde a maior parte das capas põe o título */
+.coverTag {
+  position: absolute;
+  left: 0.85rem;
+  top: 0.85rem;
+  font-size: 0.5625rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink);
+  background: rgba(10, 10, 13, 0.72);
+  backdrop-filter: blur(6px);
+  border: 1px solid var(--hairline);
+  border-radius: 999px;
+  padding: 0.28rem 0.62rem;
+}
+
+/* a contagem também na capa: quem passa os olhos na grade já entende */
+.coverDays {
+  position: absolute;
+  top: 0.85rem;
+  right: 0.85rem;
+  display: inline-flex;
+  align-items: baseline;
+  font-size: var(--step-1);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  background: rgba(10, 10, 13, 0.72);
+  backdrop-filter: blur(6px);
+  border: 1px solid var(--hairline);
+  border-radius: 999px;
+  padding: 0.22rem 0.7rem;
+}
+
+.coverDays small {
+  font-size: 0.625rem;
+  font-weight: 500;
+  color: var(--muted);
+}
+
+/* ---------- corpo ---------- */
+.body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 1.15rem 1.25rem 1.25rem;
+}
+
+.title {
+  font-size: var(--step-1);
+  margin-bottom: 0.35rem;
+}
+
+.summary {
+  font-size: var(--step--1);
+  color: var(--muted);
+  line-height: 1.55;
+  margin-bottom: 1.1rem;
+  flex: 1;
+}
+
+.action {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: var(--step--1);
+  font-weight: 600;
+  color: var(--ink);
+  transition: gap var(--fast) var(--ease);
+}
+
+.open:hover .action {
+  gap: 0.65rem;
+}
+
+/* ---------- a espera ---------- */
+/* a espera ganha caixa própria em vez de virar rodapé cinza do card: é a
+   informação que decide se a pessoa volta amanhã ou daqui a uma semana */
+.wait {
+  display: grid;
+  gap: 0.7rem;
+  margin-top: auto;
+  padding: 0.85rem 0.95rem;
+  background: var(--accent-wash);
+  border: 1px solid rgba(37, 244, 238, 0.22);
+  border-radius: var(--radius-sm);
+}
+
+.blocks {
+  display: flex;
+  gap: 3px;
+}
+
+.blocks i {
+  flex: 1;
+  height: 5px;
+  border-radius: 3px;
+  background: var(--surface-sunk);
+  border: 1px solid var(--hairline);
+  transition: background var(--base) var(--ease);
+}
+
+.blocks .blockOn {
+  background: var(--accent);
+  border-color: var(--accent);
+  box-shadow: 0 0 10px -3px rgba(37, 244, 238, 0.6);
+}
+
+/* a data é a informação que a pessoa veio buscar neste card: ela não pode
+   estar no cinza de rodapé, que é onde estava */
+.waitText {
+  font-size: var(--step--1);
+  line-height: 1.6;
+  color: var(--ink-2);
+}
+
+.waitText strong {
+  color: var(--accent);
+  font-weight: 700;
+}

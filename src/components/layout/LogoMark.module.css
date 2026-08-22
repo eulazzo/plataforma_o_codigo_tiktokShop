@@ -1,0 +1,27 @@
+.mark {
+  display: block;
+  flex: none;
+  overflow: visible;
+}
+
+/* o contorno de trás, deslocado: a aberração cromática da marca */
+.ghost {
+  stroke: var(--magenta);
+  transform: translate(-2.1px, -1.6px);
+  transition: transform var(--base) var(--ease);
+}
+
+.solid {
+  stroke: var(--accent);
+}
+
+/* ao passar o mouse na marca, o desvio abre um pouco — sinal de que é um link */
+.mark:hover .ghost {
+  transform: translate(-3.4px, -2.4px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mark:hover .ghost {
+    transform: translate(-2.1px, -1.6px);
+  }
+}

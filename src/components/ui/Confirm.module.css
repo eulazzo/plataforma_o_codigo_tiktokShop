@@ -1,0 +1,72 @@
+.body {
+  padding-bottom: 0.25rem;
+}
+
+/* o que vai ser apagado, dito com todas as letras */
+.detail {
+  font-size: var(--step-0);
+  font-weight: 600;
+  color: var(--ink);
+  padding: 0.75rem 0.9rem;
+  background: var(--surface-sunk);
+  border-left: 2px solid var(--magenta);
+  border-radius: var(--radius-sm);
+  overflow-wrap: anywhere;
+}
+
+.note {
+  margin-top: 0.85rem;
+  font-size: 0.75rem;
+  line-height: 1.55;
+  color: var(--muted-2);
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  margin-top: 1.35rem;
+}
+
+.cancel {
+  font-family: var(--font-body);
+  font-size: var(--step--1);
+  font-weight: 600;
+  color: var(--ink);
+  background: var(--surface-sunk);
+  border: 1px solid var(--hairline-strong);
+  border-radius: 999px;
+  padding: 0.75rem 1.5rem;
+  min-height: 44px;
+  transition:
+    border-color var(--fast) var(--ease),
+    background var(--fast) var(--ease);
+}
+
+.cancel:hover {
+  background: var(--surface);
+  border-color: var(--ink);
+}
+
+.confirm {
+  font-family: var(--font-body);
+  font-size: var(--step--1);
+  font-weight: 700;
+  color: var(--paper);
+  background: var(--ink);
+  border: 1px solid var(--ink);
+  border-radius: 999px;
+  padding: 0.75rem 1.5rem;
+  min-height: 44px;
+  transition: background var(--fast) var(--ease);
+}
+
+.danger {
+  color: #fff;
+  background: var(--magenta);
+  border-color: var(--magenta);
+}
+
+.danger:hover {
+  background: #ff4a6d;
+}

@@ -1,0 +1,180 @@
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  height: var(--topbar-h);
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0 var(--gutter);
+  background: color-mix(in srgb, var(--paper) 88%, transparent);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--hairline);
+}
+
+.mobileBrand {
+  flex: 1;
+}
+
+@media (min-width: 900px) {
+  .mobileBrand {
+    display: none;
+  }
+}
+
+/* progresso: some no celular para não competir com a marca */
+.progress {
+  display: none;
+  align-items: center;
+  gap: 0.75rem;
+  min-width: 180px;
+}
+
+@media (min-width: 900px) {
+  .progress {
+    display: flex;
+    flex: 1;
+    max-width: 260px;
+  }
+}
+
+.percent {
+  font-size: var(--step--1);
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.profile {
+  position: relative;
+  margin-left: auto;
+}
+
+.avatarBtn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.35rem 0.5rem 0.35rem 0.35rem;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  color: var(--ink-2);
+  transition: border-color var(--fast) var(--ease), background var(--fast) var(--ease);
+}
+
+.avatarBtn:hover {
+  background: var(--surface);
+  border-color: var(--hairline);
+}
+
+.avatar {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: var(--ink);
+  color: var(--paper);
+  flex: none;
+}
+
+.who {
+  font-size: var(--step--1);
+  font-weight: 600;
+}
+
+@media (max-width: 480px) {
+  .who {
+    display: none;
+  }
+}
+
+.menu {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  width: 268px;
+  background: var(--surface);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-lift);
+  padding: 0.4rem;
+  animation: menu-in 160ms var(--ease) both;
+}
+
+@keyframes menu-in {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.menuHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.65rem 0.7rem 0.6rem;
+}
+
+.menuHead strong {
+  font-size: var(--step-0);
+  color: var(--ink);
+}
+
+.menuPlan {
+  font-size: 0.5625rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--teal-deep);
+  background: var(--teal-wash);
+  border-radius: 999px;
+  padding: 0.2rem 0.5rem;
+}
+
+.menuBlock {
+  padding: 0.5rem 0.7rem;
+  margin: 0 0 0.25rem;
+  border-top: 1px solid var(--hairline);
+  border-bottom: 1px solid var(--hairline);
+  display: grid;
+  gap: 0.3rem;
+}
+
+.menuRow {
+  display: flex;
+  justify-content: space-between;
+  font-size: var(--step--1);
+  color: var(--muted);
+}
+
+.menuRow span:last-child {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.menuItem {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 0.6rem 0.7rem;
+  border-radius: 8px;
+  font-size: var(--step--1);
+  color: var(--ink-2);
+  transition: background var(--fast) var(--ease);
+}
+
+.menuItem:hover {
+  background: var(--surface-sunk);
+}
+
+.note {
+  font-size: 0.6875rem;
+  line-height: 1.5;
+  color: var(--muted-2);
+  padding: 0.5rem 0.7rem 0.4rem;
+  border-top: 1px solid var(--hairline);
+  margin-top: 0.25rem;
+}
