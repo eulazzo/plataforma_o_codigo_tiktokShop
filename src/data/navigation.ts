@@ -18,7 +18,6 @@ export const navItems: NavItem[] = [
   { to: '/ganchos', label: 'Ganchos', icon: 'magnet', status: 'ready' },
   { to: '/metricas', label: 'Métricas', icon: 'chart', status: 'ready' },
   { to: '/ferramentas', label: 'Ferramentas', icon: 'table', status: 'ready', completeOnly: true },
-  { to: '/downloads', label: 'Downloads', icon: 'download', status: 'soon' },
 ];
 
 /** Itens que aparecem na barra inferior do celular (o resto vai para "Mais"). */

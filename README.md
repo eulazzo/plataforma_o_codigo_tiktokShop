@@ -32,6 +32,56 @@ e os caminhos dos arquivos são relativos, então funciona inclusive dentro de u
 subdiretório de nome não óbvio — `seudominio.com/a7f3c2/` — o que já reduz o
 link ser descoberto por acaso.
 
+### O que publicar
+
+> **Publique `dist/complete` ou `dist/essential` — nunca `dist`.**
+> O `dist/` não tem `index.html`: ele só contém as duas subpastas. Publicar
+> ele dá "Page not found" na raiz, que é o erro mais fácil de cometer aqui.
+
+**São dois sites separados, um por versão.** Cada link vai no e-mail de entrega
+do produto correspondente.
+
+Não junte os dois no mesmo domínio, nem publicando `dist/` inteiro nem copiando
+as duas pastas para o mesmo lugar: com `/essential/` e `/complete/` lado a lado,
+quem comprou o Essencial troca uma palavra na barra de endereço e entra na
+Completa. Toda a separação de build descrita abaixo existe para que o conteúdo
+da Completa **não exista** no pacote da Essencial — publicar as duas juntas joga
+isso fora no último passo.
+
+Não é preciso regra de redirecionamento nem configuração de SPA: as rotas são
+por hash (`/#/plano`), então o servidor nunca vê nada além da raiz.
+
+### Configuração no Netlify (é assim que está hoje)
+
+O site é **conectado ao Git** — repositório `plataforma_o_codigo_tiktokShop`,
+branch `main`. Cada push publica sozinho. Não existe arrastar-e-soltar em site
+conectado: o que manda são estes três campos, em *Deploy settings → Build
+settings*.
+
+| Campo | Versão Completa | Versão Essencial |
+|---|---|---|
+| Base directory | *(vazio)* | *(vazio)* |
+| Build command | `npm run build:complete` | `npm run build:essential` |
+| Publish directory | `dist/complete` | `dist/essential` |
+
+**Base directory vazio** porque o `.git` fica dentro de `plataforma-ocodigo/`:
+a raiz do repositório já é a raiz do projeto.
+
+**São dois sites no Netlify apontando para o mesmo repositório**, mudando só
+essas duas linhas. Não tente resolver com um site só.
+
+Publish directory como `dist` é o erro clássico e dá 404 na raiz — `dist` não
+tem `index.html`, só as duas subpastas.
+
+O `dist/` está no `.gitignore`, então quem gera o build é o Netlify. Isso
+significa que **basta dar push para publicar** — inclusive para trocar a
+credencial de `src/data/access.ts`.
+
+> **A credencial é compilada para dentro do JavaScript.** Trocou
+> `src/data/access.ts`? Faça commit e push — o Netlify reconstrói. Rodar o build
+> na sua máquina não muda o que está no ar, porque `dist/` nem sobe para o
+> repositório.
+
 ## Verificar antes de publicar
 
 ```bash
@@ -154,9 +204,13 @@ A plataforma abre numa tela de entrada com **uma credencial compartilhada por
 todos os alunos**, definida em `src/data/access.ts`:
 
 ```ts
-email:    'user_ocodigotikok@gmail.com'
-password: 'ocodigotikokuser450'
+email:    'acesso@ocodigotiktokshop.com'
+password: 'plano7dias2026'
 ```
+
+> O e-mail é só o identificador comparado no navegador — não precisa existir
+> caixa postal. Mas se o domínio for o do seu site, configure um encaminhamento:
+> alguém vai escrever para lá pedindo suporte.
 
 Envie esses dados por e-mail depois da compra — a Kiwify/Hotmart faz isso
 automaticamente na entrega do produto.
